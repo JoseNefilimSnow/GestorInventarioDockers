@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    image: adrianvp98/proyectoodoo11:postgres9.6
+    volumes:
+      - /home/adrian/odoo-postgre-proyecto/db-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    environment:
+    - POSTGRES_USER=odoo
+    - POSTGRES_PASSWORD=odoo
+    - POSTGRES_DB=postgres
+    - PGDATA=/var/lib/postgresql/data/pgdata
+  web:
+    image: adrianvp98/proyectoodoo11:odoo11
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"    
+    volumes:
+      - web-data:/var/lib/odoo
+      - /home/adrian/odoo-postgre-proyecto/config:/etc/odoo
+      - /home/adrian/odoo-postgre-proyecto/addons:/mnt/extra-addons
+volumes:
+  db-data:
+    driver: local
+  web-data:
+    driver: local

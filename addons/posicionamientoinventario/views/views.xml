@@ -1,0 +1,65 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="posicionamientoinventario.list">
+      <field name="name">Posicionamiento</field>
+      <field name="model">posicionamientoinventario.posicionamientoinventario</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="pos"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="posicionamientoinventario.ub">
+      <field name="name">Ubicacion</field>
+      <field name="model">posicionamientoinventarioub.ubicacion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="ub"/>
+        </tree>
+      </field>
+    </record>
+   
+    
+    <record model="ir.actions.act_window" id="posicionamientoinventario.action_window">
+      <field name="name">Posicionamiento</field>
+      <field name="res_model">posicionamientoinventario.posicionamientoinventario</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="posicionamientoinventario.action_window_2">
+      <field name="name">Ubicacion</field>
+      <field name="res_model">posicionamientoinventarioub.ubicacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+   
+
+    
+    <!--<record model="ir.actions.server" id="posicionamientoinventario.action_server">
+      <field name="name">posicionamientoinventario server</field>
+      <field name="model_id" ref="model_posicionamientoinventario_posicionamientoinventario"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record><-->
+   
+
+    
+    <menuitem name="Posicionamiento de Producto" id="posicionamientoinventario.menu_root"/>
+   
+    
+    <menuitem name="Menu" id="posicionamientoinventario.menu_1" parent="posicionamientoinventario.menu_root"/>
+   
+    
+    <menuitem name="Posicionamiento" id="posicionamientoinventario.menu_1_list" parent="posicionamientoinventario.menu_1"
+              action="posicionamientoinventario.action_window"/>
+    <menuitem name="Ubicacion" id="posicionamientoinventario.menu_2_list" parent="posicionamientoinventario.menu_1"
+              action="posicionamientoinventario.action_window_2"/>
+   
+  </data>
+</odoo>

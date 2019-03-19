@@ -1,0 +1,59 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="modulodependencias.list">
+      <field name="name">modulodependencias list</field>
+      <field name="model">modulodependencias.modulodependencias</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="modulodependencias.action_window">
+      <field name="name">modulodependencias window</field>
+      <field name="res_model">modulodependencias.modulodependencias</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="modulodependencias.action_server">
+      <field name="name">modulodependencias server</field>
+      <field name="model_id" ref="model_modulodependencias_modulodependencias"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="modulodependencias" id="modulodependencias.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="modulodependencias.menu_1" parent="modulodependencias.menu_root"/>
+    <menuitem name="Menu 2" id="modulodependencias.menu_2" parent="modulodependencias.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="modulodependencias.menu_1_list" parent="modulodependencias.menu_1"
+              action="modulodependencias.action_window"/>
+    <menuitem name="Server to list" id="modulodependencias" parent="modulodependencias.menu_2"
+              action="modulodependencias.action_server"/>
+    -->
+  </data>
+</odoo>
