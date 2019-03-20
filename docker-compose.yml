@@ -3,7 +3,7 @@ services:
   db:
     image: adrianvp98/proyectoodoo11:postgres9.6
     volumes:
-      - /home/adrian/odoo-postgre-proyecto/db-data:/var/lib/postgresql/data/pgdata
+      - /home/dockers/GestorInventarioDockers/db-data:/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     environment:
@@ -19,8 +19,8 @@ services:
       - "8069:8069"    
     volumes:
       - web-data:/var/lib/odoo
-      - /home/adrian/odoo-postgre-proyecto/config:/etc/odoo
-      - /home/adrian/odoo-postgre-proyecto/addons:/mnt/extra-addons
+      - /home/dockers/GestorInventarioDockers/config:/etc/odoo
+      - /home/dockers/GestorInventarioDockers/addons:/mnt/extra-addons
 volumes:
   db-data:
     driver: local
