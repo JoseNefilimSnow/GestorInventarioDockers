@@ -1,12 +1,26 @@
+<!-- <odoo>
+    <data>
+        <record id="res_group_form_view_inherited" model="ir.ui.view">
+            <field name="name">res.group.form.view.inherited</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='barcode']" position="replace">
+                        <field name="pos2" string="Posicion"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo> -->
 <odoo>
     <data>
         <record id="res_group_form_view_inherited" model="ir.ui.view">
             <field name="name">res.group.form.view.inherited</field>
-            <field name="model">stock.location</field>
-            <field name="inherit_id" ref="stock.view_location_form" />
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//form/group/group[@name='localization']" position="replace">
-                    <group string="Posicionamiento">
+                <xpath expr="//form/sheet/notebook/page[@name='inventory']" position="inside">
+                    <group string="Ubicaciones del producto">
                         <field name="pos2" string="Posicion"/>
                     </group>
                 </xpath>

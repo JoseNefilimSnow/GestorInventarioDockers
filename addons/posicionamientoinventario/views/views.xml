@@ -20,10 +20,25 @@
                     <sheet>
                         <group>
                             <group>
+                                <field name="ub_id" invisible="1"/>
                                 <field name="ub"/>
                             </group>
-                            <group name="avanzado">
-                                <field name="id_ub" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="posicionamientoinventario.cod">
+            <field name="name">Codigo</field>
+            <field name="model">posicionamientoinventariopl.placeholder</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="id_code" invisible="1"/>
+                                <field name="code"/>
                             </group>
                         </group>
                     </sheet>
@@ -44,29 +59,26 @@
             <field name="view_mode">tree,form</field>
         </record> -->
 
-
-
         <!-- <record model="ir.actions.server" id="posicionamientoinventario.action_server">
-      <field name="name">posicionamientoinventario server</field>
-      <field name="model_id" ref="model_posicionamientoinventario_posicionamientoinventario"/>
-      <field name="code">
+            <field name="name">posicionamientoinventario server</field>
+            <field name="model_id" ref="model_posicionamientoinventario_posicionamientoinventario"/>
+            <field name="code">
         action = {
           "type": "ir.actions.act_window",
           "view_mode": "tree,form",
           "res_model": self._name,
         }
-      </field>
-    </record><-->
+            </field>
+        </record> -->
 
 
 
-        <!-- <menuitem name="Posicionamiento de Producto" id="posicionamientoinventario.menu_root"/> -->
+        <!-- <menuitem name="Posicionamiento de Producto" id="posicionamientoinventario.menu_root"/>
 
 
-        <!-- <menuitem name="Menu" id="posicionamientoinventario.menu_1" parent="posicionamientoinventario.menu_root"/> -->
+        <menuitem name="Menu" id="posicionamientoinventario.menu_1" parent="posicionamientoinventario.menu_root"/>
 
-
-        <!-- <menuitem name="Posicionamiento" id="posicionamientoinventario.menu_1_list" parent="posicionamientoinventario.menu_1" action="posicionamientoinventario.action_window"/>
+        <menuitem name="Posicionamiento" id="posicionamientoinventario.menu_1_list" parent="posicionamientoinventario.menu_1" action="posicionamientoinventario.action_window"/>
         <menuitem name="Ubicacion" id="posicionamientoinventario.menu_2_list" parent="posicionamientoinventario.menu_1" action="posicionamientoinventario.action_window_2"/> -->
 
     </data>
