@@ -3,20 +3,20 @@
     'name': "Posicionamiento Inventario",
 
     'summary': """
-        Modulo de Posicionamiento de Inventario""",
+        Modulo de Posicionamiento de Productos en Almacen""",
 
     'description': """
-        Modulo de Posicionamiento de Inventario!
+        Modulo de Posicionamiento de Productos en Almacen
     """,
 
     'author': "Valper",
-    'website': "http://www.yourcompany.com",
+    'website': "http://valpersoluciones.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Posicionamiento',
-    'version': '1.0',
+    'version': '3.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base','stock'],

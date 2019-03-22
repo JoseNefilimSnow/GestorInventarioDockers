@@ -19,7 +19,7 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','sale_management','mail','account_invoicing','purchase','hr','contacts'],
+    'depends': ['base','stock','sale_management','mail','account_invoicing','purchase','hr','contacts','posicionamientoinventario'],
 
     # always loaded
     'data': [
