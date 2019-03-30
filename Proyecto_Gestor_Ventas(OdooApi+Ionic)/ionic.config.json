@@ -1,0 +1,8 @@
+{
+  "name": "Gestor de Ventas",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "app_id": ""
+}

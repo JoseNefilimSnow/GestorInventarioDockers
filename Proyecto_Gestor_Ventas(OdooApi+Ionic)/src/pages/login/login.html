@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title> Inicio de Sesión </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="advancedTools()">
+        <ion-icon name="construct"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+  <div text-center>
+    <img src="assets/imgs/ValperApp.png" alt="No Image" />
+  </div>
+
+  <ion-card>
+    <div>
+      <form (ngSubmit)="login()" #registerForm="ngForm">
+        <div class="spacer" style="height: 10px;"></div>
+
+        <ion-item class="border-box">
+          <ion-input type="email" placeholder="Usuario(Email)" [(ngModel)]="email" name="email" required></ion-input>
+        </ion-item>
+        <div class="spacer" style="height: 10px;"></div>
+
+        <ion-item class="border-box">
+          <ion-input type="password" [(ngModel)]="password" name="pass" placeholder="Contraseña" required></ion-input>
+        </ion-item>
+        <div class="spacer" style="height: 10px;"></div>
+        <button ion-button block round outline type="submit" (click)="reinit()">
+          Iniciar Sesión
+        </button>
+      </form>
+    </div>
+  </ion-card>
+  <div [hidden]="advTools">
+    <ion-input type="text" placeholder="Url Odoo" [(ngModel)]="odooUrl" name="odooUrl" required></ion-input>
+    <button ion-button block round outline (click)="setIp()">
+      Guardar configuración
+    </button>
+  </div>
+</ion-content>

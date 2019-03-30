@@ -1,0 +1,34 @@
+import { BrowserModule } from "@angular/platform-browser";
+import { ErrorHandler, NgModule } from "@angular/core";
+import { HttpModule } from "@angular/http";
+import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
+import { LoginPage } from "../pages/login/login";
+import { SalePage } from "../pages/sale/sale";
+import { MyApp } from "./app.component";
+import { Network } from "@ionic-native/network";
+import { OdooJsonRpc } from "../services/odoojsonrpc";
+import { SplashScreen } from "@ionic-native/splash-screen";
+import { StatusBar } from "@ionic-native/status-bar";
+
+@NgModule({
+  declarations: [
+    MyApp,
+    LoginPage,
+    SalePage
+  ],
+  imports: [BrowserModule, HttpModule, IonicModule.forRoot(MyApp)],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    LoginPage,
+    SalePage
+  ],
+  providers: [
+    Network,
+    StatusBar,
+    SplashScreen,
+    OdooJsonRpc,
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+  ]
+})
+export class AppModule {}
