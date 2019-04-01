@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only>
+        <ion-icon name="bowtie"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       Realizar Venta
     </ion-title>
@@ -15,19 +20,20 @@
 <ion-content padding>
   <form (ngSubmit)="checkUser()">
     <ion-item class="border-box">
-      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="nif" name="nif" required></ion-input>
+      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>
     </ion-item>
     <div class="spacer" style="height: 10px;"></div>
     <button ion-button block round outline type="submit">
       Comprobar
     </button>
   </form>
-  <div [hidden]="swtch">
+  <div [hidden]="Swtch">
     <form (ngSubmit)="addProdToSale()">
       <ion-col align-self: center>
-        <ion-input type="text" placeholder="Ref.Producto" name="default_code" [(ngModel)]="default_code"></ion-input>
-        <ion-input type="number" placeholder="Cantidad" name="product_uom_qty" [(ngModel)]="product_uom_qty"></ion-input>
-        <button ion-button block round outline type="submit">Realizar Venta</button>
+        <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>
+        <ion-input type="number" placeholder="Cantidad" name="Quantity" [(ngModel)]="Quantity"></ion-input>
+        <button ion-button block round outline type="submit">Añadir Producto</button>
+        <button ion-button block round outline (click)="endSale()">Finalizar</button>
       </ion-col>
     </form>
   </div>
