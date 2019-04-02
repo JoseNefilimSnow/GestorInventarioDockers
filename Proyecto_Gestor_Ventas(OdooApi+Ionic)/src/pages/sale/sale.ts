@@ -34,6 +34,7 @@ export class SalePage {
   //Variables obtenidas de odoo
   partner_id;
   order_id;
+  order_name;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils) {}
 
@@ -104,7 +105,6 @@ export class SalePage {
     ];
     this.odooRpc.searchRead('product.template', patrn, [], 0, 0, "").then((res: any) => {
       this.utils.dismissLoading();
-      console.log(Number(JSON.parse(res._body)["result"].records[0].id));
       let product_id=Number(JSON.parse(res._body)["result"].records[0].id);
       this.createSaleOrderLine(product_id);
     }).catch(err => {
@@ -134,6 +134,7 @@ export class SalePage {
     this.odooRpc.updateRecord('sale.order', this.order_id, {
       state: "sale"
     });
+    this.createSaleInvoice();
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;
@@ -150,4 +151,30 @@ export class SalePage {
     localStorage.removeItem("token");
     this.navCtrl.setRoot(LoginPage);
   }
+
+  // private createSaleInvoice() {
+  //   let patrn = [
+  //     ["order_id", "=", this.order_id]
+  //   ];
+  //   this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
+  //     this.utils.dismissLoading();
+  //     // console.log(JSON.parse(res._body)["result"].records[0].name);
+  //     // this.order_name=String(JSON.parse(res._body)["result"].records[0].name);
+  //   }).catch(err => {
+  //     this.utils.dismissLoading();
+  //     this.utils.presentToast(
+  //       "Error desconocido con el servidor (Desconexion)",
+  //       2500,
+  //       true,
+  //       "top"
+  //     );
+  //   });
+  //   this.odooRpc.createRecord('sale.order', {
+  //     origin: this.order_name
+  //   }).then((res: any) => {
+  //     console.log(JSON.parse(res)+"DONE");
+  //   }).catch((err: any) => {
+  //     alert(err);
+  //   });
+  // }
 }

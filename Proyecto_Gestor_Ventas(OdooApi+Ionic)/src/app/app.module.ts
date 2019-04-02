@@ -4,6 +4,7 @@ import { HttpModule } from "@angular/http";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { LoginPage } from "../pages/login/login";
 import { SalePage } from "../pages/sale/sale";
+import { SalesInvoicePage } from "../pages/sales-invoice/sales-invoice";
 import { MyApp } from "./app.component";
 import { Network } from "@ionic-native/network";
 import { OdooJsonRpc } from "../services/odoojsonrpc";
@@ -14,14 +15,16 @@ import { StatusBar } from "@ionic-native/status-bar";
   declarations: [
     MyApp,
     LoginPage,
-    SalePage
+    SalePage,
+    SalesInvoicePage
   ],
   imports: [BrowserModule, HttpModule, IonicModule.forRoot(MyApp)],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
-    SalePage
+    SalePage,
+    SalesInvoicePage
   ],
   providers: [
     Network,
