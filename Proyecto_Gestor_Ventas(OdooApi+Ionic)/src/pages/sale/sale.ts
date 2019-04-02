@@ -34,7 +34,14 @@ export class SalePage {
   //Variables obtenidas de odoo
   partner_id;
   order_id;
+  order_line_id;
+  account_invoice_id;
+  account_line_id;
   order_name;
+  
+  //Variables auxiliares 
+  private order_line_index:number = 0;
+  private account_line_index:number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils) {}
 
@@ -84,9 +91,27 @@ export class SalePage {
       partner_id: this.partner_id
     }).then((res: any) => {
       this.order_id = JSON.parse(res._body)["result"];
+      let patrn = [
+        ["id", "=", JSON.parse(res._body)["result"]]
+      ];
       this.utils.dismissLoading();
+      this.utils.presentLoading("Finalizando detalles");
+      this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
+        this.order_name =JSON.parse(res._body)["result"].records[0].name;
+        this.utils.dismissLoading();
+      })
+
     }).catch((err: any) => {
       this.utils.dismissLoading();
+      alert(err);
+    });
+    this.odooRpc.createRecord('account.invoice', {
+      origin: this.order_name,
+      partner_id: this.partner_id
+    }).then((res: any) => {
+      this.account_invoice_id = JSON.parse(res._body)["result"];
+      this.utils.dismissLoading();
+    }).catch((err: any) => {
       alert(err);
     });
   }
@@ -105,8 +130,9 @@ export class SalePage {
     ];
     this.odooRpc.searchRead('product.template', patrn, [], 0, 0, "").then((res: any) => {
       this.utils.dismissLoading();
-      let product_id=Number(JSON.parse(res._body)["result"].records[0].id);
-      this.createSaleOrderLine(product_id);
+      let product_id = Number(JSON.parse(res._body)["result"].records[0].id);
+      this.createAccountOrderLine(product_id, this.order_line_index);
+      this.createSaleOrderLine(product_id,this.order_line_index);
     }).catch(err => {
       this.utils.dismissLoading();
       this.utils.presentToast(
@@ -117,24 +143,45 @@ export class SalePage {
       );
     });
   }
-  private createSaleOrderLine(product_id:Number) {
+
+  private createSaleOrderLine(product_id: Number,aux:number) {
+    this.order_line_index=aux+1;
     this.odooRpc.createRecord('sale.order.line', {
       order_id: this.order_id,
       product_id: product_id,
       product_uom_qty: this.Quantity
     }).then((res: any) => {
+      this.order_line_id[this.order_line_index-1] = JSON.parse(res._body)["result"];
       this.utils.dismissLoading();
-      this.Prod_ref = null;
-      this.Quantity = 1;
+    }).catch((err: any) => {
+      alert(err);
+    });
+    this.Prod_ref = null;
+    this.Quantity = 1;
+  }
+
+  private  createAccountOrderLine(product_id: Number,aux:number){
+    this.account_line_index=aux+1;
+    this.odooRpc.createRecord('account.invoice.line', {
+      origin: this.order_name,
+      partner_id: this.partner_id,
+      product_id: product_id,
+      quantity: this.Quantity
+    }).then((res: any) => {
+      this.account_line_id[this.account_line_index-1] = JSON.parse(res._body)["result"];
+      this.utils.dismissLoading();
     }).catch((err: any) => {
       alert(err);
     });
   }
+
   private endSale() {
     this.odooRpc.updateRecord('sale.order', this.order_id, {
       state: "sale"
     });
-    this.createSaleInvoice();
+    this.odooRpc.updateRecord('sale.order',this.account_invoice_id,{
+      state:"open"
+    })
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;
@@ -147,34 +194,9 @@ export class SalePage {
       "top"
     );
   }
+
   private logOut() {
     localStorage.removeItem("token");
     this.navCtrl.setRoot(LoginPage);
   }
-
-  // private createSaleInvoice() {
-  //   let patrn = [
-  //     ["order_id", "=", this.order_id]
-  //   ];
-  //   this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
-  //     this.utils.dismissLoading();
-  //     // console.log(JSON.parse(res._body)["result"].records[0].name);
-  //     // this.order_name=String(JSON.parse(res._body)["result"].records[0].name);
-  //   }).catch(err => {
-  //     this.utils.dismissLoading();
-  //     this.utils.presentToast(
-  //       "Error desconocido con el servidor (Desconexion)",
-  //       2500,
-  //       true,
-  //       "top"
-  //     );
-  //   });
-  //   this.odooRpc.createRecord('sale.order', {
-  //     origin: this.order_name
-  //   }).then((res: any) => {
-  //     console.log(JSON.parse(res)+"DONE");
-  //   }).catch((err: any) => {
-  //     alert(err);
-  //   });
-  // }
 }
