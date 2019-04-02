@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Factura</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="main-cnt">
+    <ion-list>
+      <div *ngFor="let item of data">
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Documento de Origen:</ion-col>
+              <ion-col>{{item.origin}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Estado:</ion-col>
+              <ion-col>{{item.state}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Fecha de la Factura:</ion-col>
+              <ion-col>{{item.date_invoice}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Fecha de Vencimiento:</ion-col>
+              <ion-col>{{item.date_due}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Id de Cliente:</ion-col>
+              <ion-col>{{item.partner_id}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <button ion-button color="light" (click)="holiwis()">
+          Pagar
+        </button>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

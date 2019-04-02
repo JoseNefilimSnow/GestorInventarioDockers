@@ -63,7 +63,7 @@ export class MyApp {
     this.pages = [{
       title: 'Página De Ventas',
       component: SalePage
-    }],[{
+    },{
       title:'Facturas',
       component: SalesInvoicePage
     }];

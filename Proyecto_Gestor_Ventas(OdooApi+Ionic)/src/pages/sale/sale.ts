@@ -36,14 +36,16 @@ export class SalePage {
   order_id;
   order_line_id;
   account_invoice_id;
+  state;
   account_line_id;
   order_name;
-  
-  //Variables auxiliares 
-  private order_line_index:number = 0;
-  private account_line_index:number = 0;
+  origin;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils) {}
+  //Variables auxiliares 
+  private order_line_index: number = 0;
+  private account_line_index: number = 0;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils) { }
 
   //** Metodos para la creación de una venta */
 
@@ -97,7 +99,7 @@ export class SalePage {
       this.utils.dismissLoading();
       this.utils.presentLoading("Finalizando detalles");
       this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
-        this.order_name =JSON.parse(res._body)["result"].records[0].name;
+        this.order_name = JSON.parse(res._body)["result"].records[0].name;
         this.utils.dismissLoading();
       })
 
@@ -132,7 +134,7 @@ export class SalePage {
       this.utils.dismissLoading();
       let product_id = Number(JSON.parse(res._body)["result"].records[0].id);
       this.createAccountOrderLine(product_id, this.order_line_index);
-      this.createSaleOrderLine(product_id,this.order_line_index);
+      this.createSaleOrderLine(product_id, this.order_line_index);
     }).catch(err => {
       this.utils.dismissLoading();
       this.utils.presentToast(
@@ -144,14 +146,14 @@ export class SalePage {
     });
   }
 
-  private createSaleOrderLine(product_id: Number,aux:number) {
-    this.order_line_index=aux+1;
+  private createSaleOrderLine(product_id: Number, aux: number) {
+    this.order_line_index = aux + 1;
     this.odooRpc.createRecord('sale.order.line', {
       order_id: this.order_id,
       product_id: product_id,
       product_uom_qty: this.Quantity
     }).then((res: any) => {
-      this.order_line_id[this.order_line_index-1] = JSON.parse(res._body)["result"];
+      this.order_line_id[this.order_line_index - 1] = JSON.parse(res._body)["result"];
       this.utils.dismissLoading();
     }).catch((err: any) => {
       alert(err);
@@ -160,15 +162,15 @@ export class SalePage {
     this.Quantity = 1;
   }
 
-  private  createAccountOrderLine(product_id: Number,aux:number){
-    this.account_line_index=aux+1;
+  private createAccountOrderLine(product_id: Number, aux: number) {
+    this.account_line_index = aux + 1;
     this.odooRpc.createRecord('account.invoice.line', {
       origin: this.order_name,
       partner_id: this.partner_id,
       product_id: product_id,
       quantity: this.Quantity
     }).then((res: any) => {
-      this.account_line_id[this.account_line_index-1] = JSON.parse(res._body)["result"];
+      this.account_line_id[this.account_line_index - 1] = JSON.parse(res._body)["result"];
       this.utils.dismissLoading();
     }).catch((err: any) => {
       alert(err);
@@ -179,9 +181,9 @@ export class SalePage {
     this.odooRpc.updateRecord('sale.order', this.order_id, {
       state: "sale"
     });
-    this.odooRpc.updateRecord('sale.order',this.account_invoice_id,{
-      state:"open"
-    })
+    this.odooRpc.updateRecord('account.invoice', this.account_invoice_id, {
+      state: "open"
+    });
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;

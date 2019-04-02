@@ -10,13 +10,15 @@ import { Network } from "@ionic-native/network";
 import { OdooJsonRpc } from "../services/odoojsonrpc";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
+import { ViewPage } from "../pages/view/view";
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     SalePage,
-    SalesInvoicePage
+    SalesInvoicePage,
+    ViewPage
   ],
   imports: [BrowserModule, HttpModule, IonicModule.forRoot(MyApp)],
   bootstrap: [IonicApp],
@@ -24,7 +26,8 @@ import { StatusBar } from "@ionic-native/status-bar";
     MyApp,
     LoginPage,
     SalePage,
-    SalesInvoicePage
+    SalesInvoicePage,
+    ViewPage
   ],
   providers: [
     Network,
@@ -34,4 +37,4 @@ import { StatusBar } from "@ionic-native/status-bar";
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
-export class AppModule {}
+export class AppModule { }
