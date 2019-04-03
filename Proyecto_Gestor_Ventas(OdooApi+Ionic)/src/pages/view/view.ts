@@ -10,7 +10,7 @@ import { Utils } from "../../services/utils";
 })
 export class ViewPage {
 
-  private accountId: number;
+  private invoice_id: number;
   private origin: string;
   private state: string;
   private date_invoice: string;
@@ -28,7 +28,7 @@ export class ViewPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
-    this.accountId = navParams.get("id");
+    this.invoice_id = navParams.get("id");
     this.display();
   }
 
@@ -42,7 +42,7 @@ export class ViewPage {
       "date_due",
       "partner_id"
     ];
-    let domain = [["id", "=", this.accountId]];
+    let domain = [["id", "=", this.invoice_id]];
     let sort = "";
     let limit = 0;
     let offset = 0;
@@ -67,6 +67,11 @@ export class ViewPage {
           });
         }
       });
+  }
+  private statusPayed(){
+    this.odooRpc.updateRecord('account.invoice',this.invoice_id,{
+      state:"payed"
+    })
   }
 
 }

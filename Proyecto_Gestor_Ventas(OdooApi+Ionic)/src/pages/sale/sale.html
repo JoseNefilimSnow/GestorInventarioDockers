@@ -35,6 +35,13 @@
         <button ion-button block round outline type="submit">Añadir Producto</button>
       </ion-col>
     </form>
-    <button ion-button block round outline (click)="endSale()">Finalizar</button>
+    <ion-row>
+      <ion-col col-5>
+        <button ion-button block round outline (click)="cancelSale()">Cancelar</button>
+      </ion-col>
+      <ion-col col-5>
+        <button ion-button block round outline color="Danger" (click)="endSale()">Finalizar</button>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>
