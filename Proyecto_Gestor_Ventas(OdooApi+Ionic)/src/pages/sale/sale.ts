@@ -101,7 +101,7 @@ export class SalePage {
     }).then((res: any) => {
       this.order_id = JSON.parse(res._body)["result"];
       this.utils.dismissLoading();
-      // this.getAttributesOrder(); //Metodo auxiliar para obtener atributos
+      this.getAttributesOrder(); //Metodo auxiliar para obtener atributos
     }).catch((err: any) => {
       this.utils.dismissLoading();
       alert(err);
@@ -110,21 +110,20 @@ export class SalePage {
   /**
    * Metodo auxiliar para obtener atributos de venta
    */
-  // private getAttributesOrder() {
-  //   this.utils.presentLoading("Recogiendo datos");
-  //   let patrn = [
-  //     ["id", "=", this.order_id]
-  //   ];
-  //   this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
-  //     this.order_name = JSON.parse(res._body)["result"].records[0].name;
-  //     this.order_date = JSON.parse(res._body)["result"].records[0].date_order;
-  //     this.createAccountInvoice();
-  //     this.utils.dismissLoading();
-  //   }).catch(err => {
-  //     this.utils.dismissLoading();
-  //     alert(err)
-  //   });
-  // }
+  private getAttributesOrder() {
+    this.utils.presentLoading("Recogiendo datos");
+    let patrn = [
+      ["id", "=", this.order_id]
+    ];
+    this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
+      console.log(JSON.parse(res._body));
+      // this.createAccountInvoice();
+      this.utils.dismissLoading();
+    }).catch(err => {
+      this.utils.dismissLoading();
+      alert(err)
+    });
+  }
 
   /**
    * Creo la factura en odoo como borrador vacio que corresponde al cliente anterior y el documento de origen es la venta hecha.
@@ -248,10 +247,10 @@ export class SalePage {
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
   private endSale() {
-    this.odooRpc.updateRecord('sale.order', this.order_id, {
-      state: "sale"
+    this.odooRpc.call('sale.order',"action_confirm",[this.order_id],{}).then((res:any)=>{
+      console.log(JSON.parse(res._body))
     });
-    this.odooRpc.call('sale.order',"action_invoice_create",[this.order_id],null).then((res:any)=>{
+    this.odooRpc.call('sale.order',"action_invoice_create",[this.order_id,false,false],{}).then((res:any)=>{
       console.log(JSON.parse(res._body))
     });
     this.Nif = null;
