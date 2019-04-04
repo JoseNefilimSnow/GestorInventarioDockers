@@ -1,5 +1,5 @@
 import {
-  Component
+  Component, Self
 } from '@angular/core';
 import {
   IonicPage,
@@ -48,10 +48,11 @@ export class SalePage {
   private product_id;//Id de product
   private product_name;//Nombre del producto
   private product_price;//Precio del product
+  private payment_id;//Id payment
   //Variables auxiliares
   private bool: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils,public alert: AlertController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) { }
 
   //** Los siguientes metodos crearan las bases de la venta en odoo */
 
@@ -124,23 +125,6 @@ export class SalePage {
       alert(err)
     });
   }
-
-  /**
-   * Creo la factura en odoo como borrador vacio que corresponde al cliente anterior y el documento de origen es la venta hecha.
-   */
-  // private createAccountInvoice() {
-  //   console.log("En createInvoice: " + this.order_name)
-  //   //Para crear una venta solo necesitamos tener el id del usuario, posteriormente crearemos los productos en su interior.
-  //   this.odooRpc.createRecord('account.invoice', {
-  //     origin: this.order_name,
-  //     partner_id: this.partner_id
-  //   }).then((res: any) => {
-  //     this.invoice_id = JSON.parse(res._body)["result"];
-  //   }).catch((err: any) => {
-  //     alert(err);
-  //   });
-  // }
-
   //** Habiendo finalizado los metodos anteriores y con los datos pilares asignados, procedemos a la creación de métodos que asignarán valores a los objetos creados. */
 
   /**
@@ -170,40 +154,6 @@ export class SalePage {
       );
     });
   }
-
-  // private checkAviability() {
-  //   let params = [
-  //     ['product_id', '=', this.product_id]
-  //   ];
-  //   this.odooRpc.searchRead('stock.inventory.line', params, ["id", "location_id", "product_qty"], 0, 0, "").then((res: any) => {
-  //     if (JSON.parse(res._body)["result"].records.length == 1) {
-  //       let id_inv = JSON.parse(res._body)["result"].records[0].id;
-  //       let quantityInStock = JSON.parse(res._body)["result"].records[0].product_qty;
-  //       if (quantityInStock>=this.Quantity) {
-  //         this.odooRpc.updateRecord('stock.inventory.line',id_inv,{
-  //           product_qty: quantityInStock-this.Quantity
-  //         })
-  //         this.odooRpc.updateRecord('product.template',this.product_id,{
-  //           qty_avaialable: quantityInStock-this.Quantity,
-  //           virtual_avaialable:  quantityInStock-this.Quantity
-  //         })
-
-  //       } else {
-  //         let alrt = this.alert.create({
-  //           title: "Alerta del Almacen: ",
-  //           message: "No existen productos suficientes en el inventario",
-  //           buttons: ["Ok"]
-  //         });
-  //         alrt.present();
-  //       }
-  //     }else{
-  //       console.log("Todavia por tratar la aparición de mas de un inventario sobre el producto")
-  //     }
-  //   }).catch(err => {
-  //     alert(err);
-  //   });
-  // }
-
   /**
    * Este método crea una linea que contiene los prodcutos y se asignan a la venta anterior junto a la cantidad del mismo
    */
@@ -222,35 +172,10 @@ export class SalePage {
     this.Quantity = 1;
   }
   /**
-   * Método que crea una linea de productos que estarán presentes en la factura de venta anteriormente creada. 
-   */
-  // private createInvoiceLine() {
-  //   this.odooRpc.createRecord('account.invoice.line', {
-  //     name: this.product_name,
-  //     invoice_id: this.invoice_id,
-  //     product_id: this.product_id,
-  //     quantity: this.Quantity,
-  //     partner_id: this.partner_id,
-  //     account_id: 480,
-  //     price_unit: this.product_price
-  //   }).then((res: any) => {
-  //     console.log(JSON.stringify(res));
-  //     this.utils.dismissLoading();
-  //   }).catch((err: any) => {
-  //     alert(err);
-  //   });
-  //   this.Prod_ref = null;
-  //   this.Quantity = 1;
-  // }
-
-  /**
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
   private endSale() {
-    this.odooRpc.call('sale.order',"action_confirm",[this.order_id],{}).then((res:any)=>{
-      console.log(JSON.parse(res._body))
-    });
-    this.odooRpc.call('sale.order',"action_invoice_create",[this.order_id,false,false],{}).then((res:any)=>{
+    this.odooRpc.call('sale.order', "action_confirm", [this.order_id], {}).then((res: any) => {
       console.log(JSON.parse(res._body))
     });
     this.Nif = null;
@@ -284,11 +209,5 @@ export class SalePage {
     );
   }
 
-  /**
-   * Metodo que permite cerrar la sesión actual
-   */
-  private logOut() {
-    localStorage.removeItem("token");
-    this.navCtrl.setRoot(LoginPage);
-  }
+  
 }

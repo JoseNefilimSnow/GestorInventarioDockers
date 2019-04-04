@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Transferencias</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-list no-lines [virtualScroll]="transfArray">
+    <ion-item-sliding *virtualItem="let item; let i=index">
+      <ion-item (click)="view(i)">
+        <h2>{{item.reference}}</h2>
+        <p>{{item.origin}}</p>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

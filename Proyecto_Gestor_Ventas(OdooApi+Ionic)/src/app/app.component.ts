@@ -8,6 +8,7 @@ import { SplashScreen } from "@ionic-native/splash-screen";
 import { Utils } from "../services/utils";
 import { SalePage } from "../pages/sale/sale";
 import { SalesInvoicePage } from "../pages/sales-invoice/sales-invoice";
+import { TransfersPage } from "../pages/transfers/transfers";
 
 @Component({
   templateUrl: "app.html",
@@ -16,10 +17,10 @@ import { SalesInvoicePage } from "../pages/sales-invoice/sales-invoice";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = LoginPage;
-  pages: Array < {
+  pages: Array<{
     title: string,
     component: any
-  } > ;
+  }>;
   constructor(
     platform: Platform,
     private statusBar: StatusBar,
@@ -63,14 +64,24 @@ export class MyApp {
     this.pages = [{
       title: 'Página De Ventas',
       component: SalePage
-    },{
-      title:'Facturas',
+    }, {
+      title: 'Facturas',
       component: SalesInvoicePage
+    }, {
+      title: 'Transferencias',
+      component: TransfersPage
     }];
   }
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+  /**
+   * Metodo que permite cerrar la sesión actual
+   */
+  private logOut() {
+    localStorage.removeItem("token");
+    this.nav.setRoot(LoginPage);
   }
 }
