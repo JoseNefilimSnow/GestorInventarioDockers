@@ -82,6 +82,6 @@ export class MyApp {
    */
   private logOut() {
     localStorage.removeItem("token");
-    this.nav.setRoot(LoginPage);
+    this.rootPage = SalePage;
   }
 }
