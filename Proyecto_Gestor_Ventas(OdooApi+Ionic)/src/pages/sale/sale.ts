@@ -161,7 +161,9 @@ export class SalePage {
     this.odooRpc.createRecord('sale.order.line', {
       order_id: this.order_id,
       product_id: this.product_id,
-      product_uom_qty: this.Quantity
+      product_uom_qty: this.Quantity,
+      qty_to_invoice:this.Quantity,
+      invoice_status:'to invoice'
     }).then((res: any) => {
       // this.createInvoiceLine();
       this.utils.dismissLoading();
@@ -175,8 +177,8 @@ export class SalePage {
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
   private endSale() {
-    
     this.odooRpc.saleConfirm(this.order_id)
+    this.odooRpc.createInvoiceForSale(this.order_id)
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;
