@@ -17,6 +17,9 @@ export class TransfersViewPage {
   private name: string;
   private ordered_qty: number;
   private partner_id: number;
+  private state: string;
+  private qty_done: number;
+  private Swtch: boolean = false;
 
   public data: Array<{
     id: number;
@@ -26,6 +29,7 @@ export class TransfersViewPage {
     name: string;
     ordered_qty: string;
     partner_id: number;
+    state: string;
   }> = [];
 
 
@@ -43,7 +47,8 @@ export class TransfersViewPage {
       "name",
       "ordered_qty",
       "partner_id",
-      "picking_type_id"
+      "picking_type_id",
+      "state"
 
     ];
     let domain = [["id", "=", this.transf_id]];
@@ -64,6 +69,7 @@ export class TransfersViewPage {
           this.ordered_qty = data[record].ordered_qty == false ? "N/A" : data[record].ordered_qty;
           this.partner_id = data[record].partner_id == false ? "N/A" : data[record].partner_id;
           this.picking_type_id = data[record].picking_type_id == false ? "N/A" : data[record].picking_type_id;
+          this.state = data[record].state == false ? "N/A" : data[record].state;
           this.data.push({
             id: data[record].id,
             origin: data[record].origin,
@@ -71,10 +77,40 @@ export class TransfersViewPage {
             name: data[record].name == false ? "N/A" : data[record].name,
             ordered_qty: data[record].ordered_qty == false ? "N/A" : data[record].ordered_qty,
             partner_id: data[record].partner_id == false ? "N/A" : data[record].partner_id,
-            picking_type_id: data[record].picking_type_id == false ? "N/A" : data[record].picking_type_id
+            picking_type_id: data[record].picking_type_id == false ? "N/A" : data[record].picking_type_id,
+            state: data[record].state == false ? "N/A" : data[record].state
           });
         }
       });
+    //     if(this.state="done"){
+    //       this.Swtch=true;
+    //     }else{
+    //       this.Swtch=false;
+    //     }
+  }
 
+  private updateQty() {
+    if (this.qty_done == null) {
+      this.utils.presentAlert(
+        "Error",
+        "Cantidad a entregar no puede ser nula",
+        [{
+          text: "Ok"
+        }]
+      );
+    } else {
+      this.odooRpc.updateRecord('stock.move', this.transf_id, { quantity_done: this.qty_done });
+    }
+  }
+  private statusChange() {
+    this.odooRpc.searchRead('stock.move', [["id", "=", this.transf_id]], [], 0, 0, "").then((res: any) => {
+      console.log(JSON.parse(res._body));
+      let pickingID = JSON.parse(res._body)['result'].records[0].picking_id[0];
+      console.log("Picking ID: " + pickingID);
+      this.odooRpc.call('stock.picking', 'button_validate', [pickingID], {}).then((res: any) => {
+        console.log(JSON.parse(res._body));
+      });
+    }).catch(err => { alert(err) });
+    this.display();
   }
 }

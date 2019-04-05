@@ -57,10 +57,34 @@
             </ion-row>
           </ion-card-content>
         </ion-card>
-
-        <button ion-button block round outline (click)="statusPayed()">
-          Finalizar
-        </button>
+        <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col class="spec">Estado de transferencia:</ion-col>
+              <ion-col>{{item.state}}</ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+        <div [hidden]="Swtch">
+          <form (ngSubmit)="updateQty()">
+            <ion-card>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col class="spec">Cantidad a entregar:</ion-col>
+                  <ion-col>
+                    <ion-input type="number" name="qty_done" [(ngModel)]="qty_done"></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+            <button ion-button block round outline type="submit">
+              Actualizar Cantidades
+            </button>
+          </form>
+          <button ion-button block round outline (click)="statusChange()">
+            Finalizar
+          </button>
+        </div>
       </div>
     </ion-list>
   </div>
