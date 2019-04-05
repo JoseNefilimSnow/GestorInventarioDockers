@@ -35,7 +35,7 @@ export class TransfersPage {
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .searchRead(this.transf, [["picking_type_id", "!=", null]], [], 0, 0, "")
+      .getRecord(this.transf, [["picking_type_id", "!=", null]], [], 0, 0, "")
       .then((transf: any) => {
         this.utils.dismissLoading();
         this.fillParners(transf);

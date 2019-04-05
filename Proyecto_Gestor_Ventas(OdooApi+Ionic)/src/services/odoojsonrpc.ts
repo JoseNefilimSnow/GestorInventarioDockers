@@ -20,60 +20,8 @@ export class OdooJsonRpc {
     constructor(private http: Http, private utils: Utils) {
         this.http = http;
     }
-
-    /**
-     * Builds a request for odoo server
-     * @param url Odoo Server URL
-     * @param params Object
-     */
-    private buildRequest(url: String, params: any) {
-        this.jsonRpcID += 1;
-        return JSON.stringify({
-            jsonrpc: "2.0",
-            method: "call",
-            id: this.jsonRpcID,
-            params: params,
-        });
-    }
-
-    /**
-     * Returns the error message
-     * @param response Error response from server
-     */
-    public handleOdooErrors(response: any) {
-        let err: string = response.error.data.message
-        let msg = err.split("\n")
-        let errMsg = msg[0]
-
-        this.utils.presentAlert("Error", errMsg, [{
-            text: "Ok",
-            role: "cancel"
-        }])
-    }
-
-    /**
-     * Handles HTTP errors
-     */
-    public handleHttpErrors(error: any) {
-        return Promise.reject(error.message || error);
-    }
-
-    /**
-     * Sends a JSON request to the odoo server
-     * @param url Url of odoo
-     * @param params Object
-     */
-    public sendRequest(url: string, params: Object): Promise<any> {
-        let options = this.buildRequest(url, params);
-        this.headers = new Headers({
-            'Content-Type': 'application/json; charset=utf-8',
-        });
-
-        let result = this.http.post(this.odoo_server + url, options, { headers: this.headers })
-            .toPromise()
-        return result;
-    }
-
+    
+    /**--------------------Métodos de Odoo--------------------- */
     public init(configs: any) {
         this.odoo_server = configs.odoo_server;
         console.log(this.odoo_server);
@@ -90,132 +38,27 @@ export class OdooJsonRpc {
     }
 
     /**
-     * Gets the server info
+     * @param response Error
      */
-    // public getServerInfo() {
-    //     return this.sendRequest("/web/webclient/version_info", {});
-    // }
+    public handleOdooErrors(response: any) {
+        let err: string = response.error.data.message
+        let msg = err.split("\n")
+        let errMsg = msg[0]
 
-
-    /**
-     * Gets the session info
-     */
-    // public getSessionInfo() {
-    //     return this.sendRequest("/web/session/get_session_info", {});
-    // }
-
-
-    /**
-     * Gets the Odoo Server Version Number
-     */
-    // public getServerVersionNumber(): Promise<number> {
-    //     return this.getServerInfo().then((res: any): Promise<number> => {
-    //         return new Promise<number>((resolve) => {
-    //             resolve(JSON.parse(res._body)["result"]["server_version_info"][0]);
-    //         });
-    //     });
-    // }
-
-    /**
-     * Get the database list
-     */
-    // public getDbList(): Promise<string> {
-    //     let dbParams = {
-    //         context: {}
-    //     }
-    //     return this.getServerVersionNumber().then((data: number) => {
-    //         if (data <= 8) {
-    //             return this.sendRequest(this.get_list, dbParams);
-    //         } else if (data == 9) {
-    //             return this.sendRequest(this.jsonrpc, dbParams);
-    //         } else {
-    //             return this.sendRequest(this.list, dbParams);
-    //         }
-    //     })
-    // }
-
-    /**
-     * Returns all modules that are installed in your database
-     */
-    public modules(): Promise<string> {
-        let params = {
-            context: {}
-        }
-        return this.sendRequest("/web/session/modules", params)
+        this.utils.presentAlert("Error", errMsg, [{
+            text: "Ok",
+            role: "cancel"
+        }])
     }
 
-
-    /**
-     * Login to the database
-     * @param db Database name of odoo
-     * @param login Username
-     * @param password password
-     */
-    public login(db: string, login: string, password: string) {
-        let params = {
-            db: db,
-            login: login,
-            password: password,
-            base_location: this.odoo_server,
-            context: {}
-        };
-        return this.sendRequest("/web/session/authenticate", params)
-    }
-
-    /**
-     * Check whether the session is live or not
-     */
-    public check(): Promise<string> {
-        let params = {
-            context: this.getContext()
-        }
-        return this.sendRequest("/web/session/check", params)
-    }
-
-
-    /**
-     * Destroy the session 
-     */
-    public destroy() {
-        let params = {
-            context: {}
-        }
-        return this.sendRequest("/web/session/destroy", params)
-    }
-
-
-    /**
-     * Fires query in particular model with fields and conditions
-     * @param model Model name
-     * @param domain Conditions that you want to fire on your query
-     *              (e.g) let domain = [
-     *                         ["id","=",11]
-     *                    ]
-     * @param fields Fields names which you want to bring from server
-     *              (e.g) let fields = [
-     *                         ["id","name","email"]
-     *                    ]
-     * @param limit limit of the record
-     * @param offset 
-     * @param sort sorting order of data (e.g) let sort = "ascending"
-     */
-    public searchRead(model: string, domain: any, fields: any, limit: number, offset: any, sort: string) {
-        let params = {
-            model: model,
-            fields: fields,
-            domain: domain,
-            offset: offset,
-            limit: limit,
-            sort: sort,
-            context: this.getContext()
-        };
-        return this.sendRequest("/web/dataset/search_read", params);
+    public handleHttpErrors(error: any) {
+        return Promise.reject(error.message || error);
     }
 
 
     /**
      * Calls the method of that particular model
-     * @param model Model name
+     * @param model Nombre del modelo
      * @param method Method name of particular model
      * @param args Array of fields
      * @param kwargs Object
@@ -233,80 +76,111 @@ export class OdooJsonRpc {
         return this.sendRequest("/web/dataset/call_kw", params);
     }
 
-
     /**
-     * Reads that perticular fields of that particular ID
-     * @param model Model Name
-     * @param id Id of that record which you want to read
-     * @param mArgs Array of fields which you want to read of the particular id
+     * Envia una request de JSON a odoo server
+     * @param url Url de odoo
+     * @param params Objeto
      */
+    public sendRequest(url: string, params: Object): Promise<any> {
+        let options = this.buildRequest(url, params);
+        this.headers = new Headers({
+            'Content-Type': 'application/json; charset=utf-8',
+        });
 
-    public read(model: string, id: Array<number>, mArgs: Array<string>): Promise<any> {
-        let args = [
-            id, mArgs
-        ]
-        return this.call(model, 'read', args)
+        let result = this.http.post(this.odoo_server + url, options, { headers: this.headers })
+            .toPromise()
+        return result;
     }
 
+    /**
+     * Construye una request a Odoo
+     * @param url Url Odoo
+     * @param params Objeto
+     */
+    private buildRequest(url: String, params: any) {
+        this.jsonRpcID += 1;
+        return JSON.stringify({
+            jsonrpc: "2.0",
+            method: "call",
+            id: this.jsonRpcID,
+            params: params,
+        });
+    }
+ 
 
     /**
-     * Loads all data of the paricular ID
-     * @param model Model name
-     * @param id Id of that particular data which you want to load
+     * Devuelve todos los moulos
      */
-    public load(model: string, id: number): Promise<any> {
+    public modules(): Promise<string> {
         let params = {
-            model: model,
-            id: id,
-            fields: [],
-            context: this.getContext()
+            context: {}
         }
-        return this.sendRequest("/web/dataset/load", params)
+        return this.sendRequest("/web/session/modules", params)
     }
 
 
     /**
-     * Provide the name that you want to search
-     * @param model Model name
-     * @param name Name that you want to search
+     * Login a la database
+     * @param db Base de datos
+     * @param login Usuario
+     * @param password contraseña
      */
-    public nameSearch(model: string, name: string): Promise<any> {
-        let kwargs = {
-            name: name,
-            args: [],
-            operator: "ilike",
-            limit: 0
-        }
-        return this.call(model, 'name_search', [], kwargs)
+    public login(db: string, login: string, password: string) {
+        let params = {
+            db: db,
+            login: login,
+            password: password,
+            base_location: this.odoo_server,
+            context: {}
+        };
+        return this.sendRequest("/web/session/authenticate", params)
     }
 
-
+    /**---------------------CRUD de Instancias en modelos------------------------- */
+    
     /**
-     * Provide the IDs and you will get the names of that paticular IDs
-     * @param model Model name
-     * @param mArgs Array of IDs that you want to pass
-     */
-    public nameGet(model: string, mArgs: any): Promise<any> {
-        let args = [mArgs]
-        return this.call(model, 'name_get', args)
-    }
-
-    /**
-     * Create a new record
-     * @param model Model name
-     * @param mArgs Object of fields and value
+     * Crea una nueva entrada
+     * @param model Nombre del modelo
+     * @param mArgs Campos y sus valores
      */
     public createRecord(model: string, mArgs: any) {
         let args = [mArgs];
         return this.call(model, "create", args, null)
     }
 
+     /**
+     * Obtiene una entrada que cumple con las condiciones
+     * @param model Nombre del modelo
+     * @param domain Condiciones
+     *              (e.g) let domain = [
+     *                         ["id","=",11]
+     *                    ]
+     * @param fields Campos a obtener
+     *              (e.g) let fields = [
+     *                         ["id","name","email"]
+     *                    ]
+     * @param limit limite
+     * @param offset 
+     * @param sort 
+     */
+    public getRecord(model: string, domain: any, fields: any, limit: number, offset: any, sort: string) {
+        let params = {
+            model: model,
+            fields: fields,
+            domain: domain,
+            offset: offset,
+            limit: limit,
+            sort: sort,
+            context: this.getContext()
+        };
+        return this.sendRequest("/web/dataset/search_read", params);
+    }
 
 
     /**
-     * Delete the record of particular ID
-     * @param model Model Name
-     * @param id Id of record that you want to delete
+     * Borra una entrada con id:x
+     * @param model Nombre del modelo
+     * @param id Id del elemento a borrar
      */
     public deleteRecord(model: string, id: number) {
         let mArgs = [id]
@@ -315,10 +189,10 @@ export class OdooJsonRpc {
 
 
     /**
-     * Updates the record of particular ID
-     * @param model Model Name
-     * @param id Id of record that you want to update the. 
-     * @param mArgs The Object of fields and value that you want to update
+     * Actualiza una entrada con Id:x
+     * @param model Nombre del modelo
+     * @param id Id del elemento a actualizar 
+     * @param mArgs Campos a actualizar
      *              (e.g)
      *              let args = {
      *                 "name": "Vlp"
@@ -331,8 +205,71 @@ export class OdooJsonRpc {
         return this.call(model, "write", args, null)
     }
 
+    /**------------Fin del CRUD------------------- */
+    
+    /**----------------Metodos para el proyecto de Gestión de Ventas------------ */
     /**
-     * Get the User Context from the response of odoo server
+     * Confirma una venta y crea una transferencia del producto en el inventario
+     * 
+     * @param order_id //Id de Venta
+     */
+    public saleConfirm(order_id:number){
+        this.call('sale.order', "action_confirm", [order_id], {}).then((res: any) => {
+            console.log(JSON.parse(res._body))
+          });
+    }
+    /** --------------------Otros metodos utiles ------------------*/
+
+    /**
+     * @param model Nombre del modelo
+     * @param id Id del dato que quieres cargar 
+     */
+    public load(model: string, id: number): Promise<any> {
+        let params = {
+            model: model,
+            id: id,
+            fields: [],
+            context: this.getContext()
+        }
+        return this.sendRequest("/web/dataset/load", params)
+    }
+    
+    public check(): Promise<string> {
+        let params = {
+            context: this.getContext()
+        }
+        return this.sendRequest("/web/session/check", params)
+    }
+
+
+    /**
+     * Destruye la sesion 
+     */
+    public destroy() {
+        let params = {
+            context: {}
+        }
+        return this.sendRequest("/web/session/destroy", params)
+    }
+
+
+
+    /**
+     * Reads that perticular fields of that particular ID
+     * @param model Nombre del modelo
+     * @param id Id del objeto a leer
+     * @param mArgs Array de los
+     */
+
+    public read(model: string, id: Array<number>, mArgs: Array<string>): Promise<any> {
+        let args = [
+            id, mArgs
+        ]
+        return this.call(model, 'read', args)
+    }
+
+    /**
+     * Obriene el contexto
      */
     private getContext() {
         let response = localStorage.getItem("token");

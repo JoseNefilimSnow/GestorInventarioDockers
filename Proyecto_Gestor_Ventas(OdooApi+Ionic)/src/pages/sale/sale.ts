@@ -66,7 +66,7 @@ export class SalePage {
       let patrn = [
         ["vat", "=", this.Nif]
       ];
-      this.odooRpc.searchRead('res.partner', patrn, [], 0, 0, "").then((res: any) => {
+      this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
         this.partner_id = JSON.parse(res._body)["result"].records[0].id;
         this.Swtch = false;
         this.utils.dismissLoading();
@@ -116,7 +116,7 @@ export class SalePage {
     let patrn = [
       ["id", "=", this.order_id]
     ];
-    this.odooRpc.searchRead('sale.order', patrn, [], 0, 0, "").then((res: any) => {
+    this.odooRpc.getRecord('sale.order', patrn, [], 0, 0, "").then((res: any) => {
       console.log(JSON.parse(res._body));
       // this.createAccountInvoice();
       this.utils.dismissLoading();
@@ -137,7 +137,7 @@ export class SalePage {
     let patrn = [
       ["default_code", "=", this.Prod_ref]
     ];
-    this.odooRpc.searchRead('product.template', patrn, [], 0, 0, "").then((res: any) => {
+    this.odooRpc.getRecord('product.template', patrn, [], 0, 0, "").then((res: any) => {
       this.utils.dismissLoading();
       this.product_id = Number(JSON.parse(res._body)["result"].records[0].id);
       this.product_name = String(JSON.parse(res._body)["result"].records[0].name);
@@ -175,9 +175,8 @@ export class SalePage {
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
   private endSale() {
-    this.odooRpc.call('sale.order', "action_confirm", [this.order_id], {}).then((res: any) => {
-      console.log(JSON.parse(res._body))
-    });
+    
+    this.odooRpc.saleConfirm(this.order_id)
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;

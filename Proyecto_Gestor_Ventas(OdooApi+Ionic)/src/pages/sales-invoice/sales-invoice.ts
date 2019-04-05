@@ -31,7 +31,7 @@ export class SalesInvoicePage {
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .searchRead(this.account, [], [], 0, 0, "")
+      .getRecord(this.account, [], [], 0, 0, "")
       .then((account: any) => {
         this.utils.dismissLoading();
         this.fillParners(account);

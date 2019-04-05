@@ -47,7 +47,7 @@ export class ViewPage {
     let limit = 0;
     let offset = 0;
     this.odooRpc
-      .searchRead(account, domain, fields, limit, offset, sort)
+      .getRecord(account, domain, fields, limit, offset, sort)
       .then((res: any) => {
         this.utils.dismissLoading();
         let data = JSON.parse(res._body)["result"].records;

@@ -56,7 +56,7 @@ export class TransfersViewPage {
     let limit = 0;
     let offset = 0;
     this.odooRpc
-      .searchRead(transf, domain, fields, limit, offset, sort)
+      .getRecord(transf, domain, fields, limit, offset, sort)
       .then((res: any) => {
         this.utils.dismissLoading();
         let data = JSON.parse(res._body)["result"].records;
@@ -103,7 +103,7 @@ export class TransfersViewPage {
     }
   }
   private statusChange() {
-    this.odooRpc.searchRead('stock.move', [["id", "=", this.transf_id]], [], 0, 0, "").then((res: any) => {
+    this.odooRpc.getRecord('stock.move', [["id", "=", this.transf_id]], [], 0, 0, "").then((res: any) => {
       console.log(JSON.parse(res._body));
       let pickingID = JSON.parse(res._body)['result'].records[0].picking_id[0];
       console.log("Picking ID: " + pickingID);
