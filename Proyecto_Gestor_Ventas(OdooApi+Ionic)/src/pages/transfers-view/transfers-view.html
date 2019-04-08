@@ -1,16 +1,18 @@
 <ion-header>
-
   <ion-navbar>
-    <div *ngFor="let item of data">
-      <ion-title>{{item.reference}}</ion-title>
-    </div>
+    <ion-title>
+      Detalles de Transferencia
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
 
+    </ion-refresher-content>
+  </ion-refresher> -->
   <div class="main-cnt">
     <ion-list>
       <div *ngFor="let item of data">
@@ -72,7 +74,7 @@
                 <ion-row>
                   <ion-col class="spec">Cantidad a entregar:</ion-col>
                   <ion-col>
-                    <ion-input type="number" name="qty_done" [(ngModel)]="qty_done"></ion-input>
+                    <ion-input type="number" name="qty_done" placeholder="Introduce un numero" [(ngModel)]="qty_done"></ion-input>
                   </ion-col>
                 </ion-row>
               </ion-card-content>

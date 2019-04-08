@@ -221,19 +221,17 @@ export class OdooJsonRpc {
 
     /**
      * Creamos factura para la venta con id pasado por parametro
-     * @param order_id //Id de Venta
+     * @param invoice_id //Id de Factura
      */
 
-    // public createInvoiceForSale(order_id:number){
-    //     this.read('sale.order',[order_id],[]).then((res:any)=>{
-    //         console.log(JSON.parse(res._body))
-    //     });
-    //     this.call('sale.order',"action_invoice_create",[order_id,false,false],{}).then((res:any)=>{
-    //         console.log(JSON.parse(res._body));
-    //     }).catch(err=>{
-    //         alert(err);
-    //     });
-    // }
+    public createInvoiceForSale(invoice_id:number){
+        this.call('account.invoice', "action_invoice_open", [invoice_id], {}).then((res: any) => {
+            console.log(JSON.parse(res._body))
+          });
+        //   this.call('account.payment', "action_invoice_open", [invoice_id], {}).then((res: any) => {
+        //     console.log(JSON.parse(res._body))
+        //   });
+    }
 
     /** --------------------Otros metodos utiles ------------------*/
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
 import { Utils } from "../../services/utils";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @IonicPage()
 @Component({
@@ -35,8 +36,26 @@ export class TransfersViewPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
     this.transf_id = navParams.get("id");
+    this.checkState();
     this.display();
   }
+  private checkState(){
+    console.log(this.state==="done");
+    if(this.state==="done"){
+      this.Swtch = true;
+    }else{
+      this.Swtch=false;
+    }
+  }
+
+  // doRefresh(event) {
+  //   console.log('Begin async operation');
+
+  //   setTimeout(() => {
+  //     console.log('Async operation has ended');
+  //     event.target.complete();
+  //   }, 2000);
+  // }
 
   private display(): void {
     this.utils.presentLoading("Cargando...");
@@ -82,13 +101,9 @@ export class TransfersViewPage {
           });
         }
       });
-    //     if(this.state="done"){
-    //       this.Swtch=true;
-    //     }else{
-    //       this.Swtch=false;
-    //     }
   }
 
+ 
   private updateQty() {
     if (this.qty_done == null) {
       this.utils.presentAlert(
@@ -111,6 +126,7 @@ export class TransfersViewPage {
         console.log(JSON.parse(res._body));
       });
     }).catch(err => { alert(err) });
-    this.display();
+    this.data.splice(0,this.data.length);
+    this.constructor();
   }
 }

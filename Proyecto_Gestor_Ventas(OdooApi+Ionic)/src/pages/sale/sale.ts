@@ -96,7 +96,7 @@ export class SalePage {
    */
   private createSale() {
     this.utils.presentLoading("Creando Venta");
-    //Para crear una venta solo necesitamos tener el id del usuario, posteriormente crearemos los productos en su interior.
+    //Para crear una venta solo necesitamos tener el id del usuario. Posteriormente crearemos los productos en su interior.
     this.odooRpc.createRecord('sale.order', {
       partner_id: this.partner_id
     }).then((res: any) => {
@@ -108,9 +108,11 @@ export class SalePage {
       alert(err);
     });
   }
+
   /**
    * Metodo auxiliar para obtener atributos de venta
    */
+
   private getAttributesOrder() {
     this.utils.presentLoading("Recogiendo datos");
     let patrn = [
@@ -118,11 +120,32 @@ export class SalePage {
     ];
     this.odooRpc.getRecord('sale.order', patrn, [], 0, 0, "").then((res: any) => {
       console.log(JSON.parse(res._body));
-      // this.createAccountInvoice();
+      this.order_name = JSON.parse(res._body)["result"].records[0].name;
+      this.order_date = JSON.parse(res._body)["result"].records[0].date_order;
+      this.createAccountInvoice();
       this.utils.dismissLoading();
     }).catch(err => {
       this.utils.dismissLoading();
       alert(err)
+    });
+  }
+
+  /**
+   * Creamos una Factura que se vinculará a la venta
+   */
+
+  private createAccountInvoice(){
+    //Para crear una venta solo necesitamos tener el id del usuario, el documento de origen y la fecha de la venta. Posteriormente crearemos los productos en su interior.
+    this.odooRpc.createRecord('account.invoice', {
+      partner_id: this.partner_id,
+      origin:this.order_name,
+      date_invoice: this.order_date
+    }).then((res: any) => {
+      this.invoice_id = JSON.parse(res._body)["result"];
+      this.utils.dismissLoading();
+    }).catch((err: any) => {
+      this.utils.dismissLoading();
+      alert(err);
     });
   }
   //** Habiendo finalizado los metodos anteriores y con los datos pilares asignados, procedemos a la creación de métodos que asignarán valores a los objetos creados. */
@@ -161,24 +184,41 @@ export class SalePage {
     this.odooRpc.createRecord('sale.order.line', {
       order_id: this.order_id,
       product_id: this.product_id,
-      product_uom_qty: this.Quantity,
-      qty_to_invoice:this.Quantity,
-      invoice_status:'to invoice'
+      product_uom_qty: this.Quantity
     }).then((res: any) => {
-      // this.createInvoiceLine();
+      this.createInvoiceLine();
+      this.utils.dismissLoading();
+    }).catch((err: any) => {
+      alert(err);
+    });
+  }
+  /**
+   * Este método crea una linea que contiene los prodcutos y se asignan a la venta anterior junto a la cantidad del mismo
+   */
+  private createInvoiceLine() {
+    this.odooRpc.createRecord('account.invoice.line', {
+      name:this.product_name,
+      invoice_id:this.invoice_id,
+      product_id: this.product_id,
+      quantity: this.Quantity,
+      partner_id:this.partner_id,
+      account_id:480,
+      price_unit:this.product_price
+    }).then((res: any) => {
+      console.log(JSON.stringify(res));
       this.utils.dismissLoading();
     }).catch((err: any) => {
       alert(err);
     });
     this.Prod_ref = null;
     this.Quantity = 1;
-  }
+}
   /**
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
   private endSale() {
     this.odooRpc.saleConfirm(this.order_id)
-    this.odooRpc.createInvoiceForSale(this.order_id)
+    this.odooRpc.createInvoiceForSale(this.invoice_id)
     this.Nif = null;
     this.order_id = null;
     this.Swtch = true;
