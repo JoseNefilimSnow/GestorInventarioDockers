@@ -38,22 +38,22 @@ export class TransfersViewPage {
     this.display();
   }
 
-  private checkState(state:string){
-    console.log(state==="done");
-    if(state==="done"){
+  private checkState(state: string) {
+    console.log(state === "done");
+    if (state === "done") {
       this.Swtch = true;
-    }else{
-      this.Swtch=false;
+    } else {
+      this.Swtch = false;
     }
   }
 
 
 
   private display(): void {
-    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then((res:any)=>{
-      this.checkState(this.state= JSON.parse(res._body)["result"].records[0].state);
+    this.odooRpc.getRecord("stock.move", [["id", "=", this.transf_id]], [], 0, 0, "").then((res: any) => {
+      this.checkState(this.state = JSON.parse(res._body)["result"].records[0].state);
     });
-    
+
     this.utils.presentLoading("Cargando...");
     let fields = [
       "origin",
@@ -118,15 +118,15 @@ export class TransfersViewPage {
         console.log(JSON.parse(res._body));
       });
     }).catch(err => { alert(err) });
-    this.picking_type_id=null;
-    this.origin=null;
-    this.reference=null;
-    this.name=null;
-    this.ordered_qty=null;
-    this.partner_id=null;
-    this.state=null;
-    this.qty_done=null;
-    this.data=[];
+    this.picking_type_id = null;
+    this.origin = null;
+    this.reference = null;
+    this.name = null;
+    this.ordered_qty = null;
+    this.partner_id = null;
+    this.state = null;
+    this.qty_done = null;
+    this.data = [];
     this.display();
   }
 }
