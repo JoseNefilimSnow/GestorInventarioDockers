@@ -34,22 +34,13 @@ export class TransfersViewPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
-    this.transf_id = navParams.get("id");
+    this.transf_id = this.navParams.get("id");
     this.display();
   }
 
-  ionViewDidLoad(){
-    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then((res:any)=>{
-      this.state= JSON.parse(res._body)["result"].records[0].state;
-    });
-    this.data=[];
-    this.checkState();
-    this.display();
-  } 
-
-  private checkState(){
-    console.log(this.state==="done");
-    if(this.state==="done"){
+  private checkState(state:string){
+    console.log(state==="done");
+    if(state==="done"){
       this.Swtch = true;
     }else{
       this.Swtch=false;
@@ -59,6 +50,10 @@ export class TransfersViewPage {
 
 
   private display(): void {
+    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then((res:any)=>{
+      this.checkState(this.state= JSON.parse(res._body)["result"].records[0].state);
+    });
+    
     this.utils.presentLoading("Cargando...");
     let fields = [
       "origin",
@@ -98,7 +93,6 @@ export class TransfersViewPage {
           });
         }
       });
-      this.checkState();
   }
 
   private updateQty() {
@@ -124,7 +118,15 @@ export class TransfersViewPage {
         console.log(JSON.parse(res._body));
       });
     }).catch(err => { alert(err) });
+    this.picking_type_id=null;
+    this.origin=null;
+    this.reference=null;
+    this.name=null;
+    this.ordered_qty=null;
+    this.partner_id=null;
+    this.state=null;
+    this.qty_done=null;
     this.data=[];
-    this.ionViewDidLoad();
+    this.display();
   }
 }
