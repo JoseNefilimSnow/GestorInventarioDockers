@@ -39,6 +39,11 @@ export class TransfersViewPage {
     this.display();
   }
 
+  ionViewDidLoad(){
+    
+    this.checkState();
+  } 
+
   private checkState(){
     console.log(this.state==="done");
     if(this.state==="done"){
@@ -52,7 +57,6 @@ export class TransfersViewPage {
 
   private display(): void {
     this.utils.presentLoading("Cargando...");
-    let transf = "stock.move";
     let fields = [
       "origin",
       "reference",
@@ -63,12 +67,9 @@ export class TransfersViewPage {
       "state"
 
     ];
-    let domain = [["id", "=", this.transf_id]];
-    let sort = "";
-    let limit = 0;
-    let offset = 0;
+
     this.odooRpc
-      .getRecord(transf, domain, fields, limit, offset, sort)
+      .getRecord("stock.move", [["id", "=", this.transf_id]], fields, 0, 0, "")
       .then((res: any) => {
         this.utils.dismissLoading();
         let data = JSON.parse(res._body)["result"].records;

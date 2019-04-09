@@ -20,7 +20,7 @@ export class OdooJsonRpc {
     constructor(private http: Http, private utils: Utils) {
         this.http = http;
     }
-    
+
     /**--------------------Métodos de Odoo--------------------- */
     public init(configs: any) {
         this.odoo_server = configs.odoo_server;
@@ -106,7 +106,7 @@ export class OdooJsonRpc {
             params: params,
         });
     }
- 
+
 
     /**
      * Devuelve todos los moulos
@@ -137,7 +137,7 @@ export class OdooJsonRpc {
     }
 
     /**---------------------CRUD de Instancias en modelos------------------------- */
-    
+
     /**
      * Crea una nueva entrada
      * @param model Nombre del modelo
@@ -148,21 +148,21 @@ export class OdooJsonRpc {
         return this.call(model, "create", args, null)
     }
 
-     /**
-     * Obtiene una entrada que cumple con las condiciones
-     * @param model Nombre del modelo
-     * @param domain Condiciones
-     *              (e.g) let domain = [
-     *                         ["id","=",11]
-     *                    ]
-     * @param fields Campos a obtener
-     *              (e.g) let fields = [
-     *                         ["id","name","email"]
-     *                    ]
-     * @param limit limite
-     * @param offset 
-     * @param sort 
-     */
+    /**
+    * Obtiene una entrada que cumple con las condiciones
+    * @param model Nombre del modelo
+    * @param domain Condiciones
+    *              (e.g) let domain = [
+    *                         ["id","=",11]
+    *                    ]
+    * @param fields Campos a obtener
+    *              (e.g) let fields = [
+    *                         ["id","name","email"]
+    *                    ]
+    * @param limit limite
+    * @param offset 
+    * @param sort 
+    */
     public getRecord(model: string, domain: any, fields: any, limit: number, offset: any, sort: string) {
         let params = {
             model: model,
@@ -206,17 +206,17 @@ export class OdooJsonRpc {
     }
 
     /**------------Fin del CRUD------------------- */
-    
+
     /**----------------Metodos para el proyecto de Gestión de Ventas------------ */
     /**
      * Confirma una venta y crea una transferencia del producto en el inventario
      * 
      * @param order_id //Id de Venta
      */
-    public saleConfirm(order_id:number){
+    public saleConfirm(order_id: number) {
         this.call('sale.order', "action_confirm", [order_id], {}).then((res: any) => {
             console.log(JSON.parse(res._body))
-          });
+        });
     }
 
     /**
@@ -224,10 +224,10 @@ export class OdooJsonRpc {
      * @param invoice_id //Id de Factura
      */
 
-    public createInvoiceForSale(invoice_id:number){
+    public createInvoiceForSale(invoice_id: number) {
         this.call('account.invoice', "action_invoice_open", [invoice_id], {}).then((res: any) => {
             console.log(JSON.parse(res._body))
-          });
+        });
         //   this.call('account.payment', "action_invoice_open", [invoice_id], {}).then((res: any) => {
         //     console.log(JSON.parse(res._body))
         //   });
@@ -248,7 +248,7 @@ export class OdooJsonRpc {
         }
         return this.sendRequest("/web/dataset/load", params)
     }
-    
+
     public check(): Promise<string> {
         let params = {
             context: this.getContext()

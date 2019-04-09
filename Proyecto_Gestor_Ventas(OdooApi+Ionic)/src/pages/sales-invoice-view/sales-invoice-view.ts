@@ -5,10 +5,10 @@ import { Utils } from "../../services/utils";
 
 @IonicPage()
 @Component({
-  selector: 'page-view',
-  templateUrl: 'view.html',
+  selector: 'page-sale-invoice-view',
+  templateUrl: 'sale-invoice-view.html',
 })
-export class ViewPage {
+export class SaleInvoiceViewPage {
 
   private invoice_id: number;
   private origin: string;
@@ -32,6 +32,10 @@ export class ViewPage {
     this.display();
   }
 
+  ionViewDidLoad(){
+
+  }
+  
   private display(): void {
     this.utils.presentLoading("Cargando...");
     let account = "account.invoice";
