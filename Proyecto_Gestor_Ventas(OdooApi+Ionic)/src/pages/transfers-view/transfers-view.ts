@@ -40,6 +40,7 @@ export class TransfersViewPage {
   }
 
   ionViewDidLoad(){
+    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then();
     
     this.checkState();
   } 
