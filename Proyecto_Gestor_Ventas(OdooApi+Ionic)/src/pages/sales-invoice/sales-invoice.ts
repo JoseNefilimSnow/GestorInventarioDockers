@@ -14,43 +14,50 @@ export class SalesInvoicePage {
 
   private accountArray: Array<{
     id: number;
-    origin: string;
+    number: string;
   }> = [];
-
-  private items: Array<{
-    id: number;
-    origin: string;
-  }> = [];
-
-  private account = "account.invoice";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
     this.display();
   }
 
+  /** Estos métodos guardan en el array a mostrar los elementos de la tabla de Facturas */
+
+  /**
+   * Aqui se muestran las respuestas del servidor dentro de la tabla Facturas y llama al método para rellenar array
+   */
+
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .getRecord(this.account, [], [], 0, 0, "")
-      .then((account: any) => {
+      .getRecord('account.invoice', [], [], 0, 0, "")
+      .then((res: any) => {
         this.utils.dismissLoading();
-        this.fillParners(account);
+        this.fillParners(res);
       });
   }
 
-  private fillParners(account: any): void {
-    let json = JSON.parse(account._body);
-    if (!json.error) {
-      let query = json["result"].records;
+  /**
+   * El método rellena el array
+   */
 
-      for (let i in query) {
+  private fillParners(res: any): void {
+    let json = JSON.parse(res._body);
+    if (!json.error) {
+      let data = json["result"].records;
+
+      for (let i in data) {
         this.accountArray.push({
-          id: query[i].id,
-          origin: query[i].origin == false ? "N/A" : query[i].origin,
+          id: data[i].id,
+          number: data[i].number == false ? "N/A" : data[i].number,
         });
       }
     }
   }
+
+  /** 
+   * Método que te abre cada instancia de Facturas
+  */
 
   private view(idx: number): void {
     let params = {
@@ -58,43 +65,5 @@ export class SalesInvoicePage {
     };
     this.navCtrl.push(ViewPage, params);
   }
-
-  initializeItems(): void {
-    this.accountArray = this.items;
-  }
-
-  getItems(searchbar) {
-    // Reset items back to all of the items
-    this.initializeItems();
-
-    // set q to the value of the searchbar
-    var q = searchbar.srcElement.value;
-
-    // if the value is an empty string don't filter the items
-    if (!q) {
-      return;
-    }
-
-    this.accountArray = this.accountArray.filter(v => {
-      if (v.origin && q) {
-        if (v.origin.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-          return true;
-        }
-        return false;
-      }
-    });
-
-    console.log(q, this.items.length);
-  }
-
-  private delete(idx: number) {
-    this.odooRpc.deleteRecord(this.account, this.accountArray[idx].id);
-    this.utils.presentToast(
-      this.accountArray[idx].origin + " Borrado con Exito",
-      2000,
-      true,
-      "top"
-    );
-    this.accountArray.splice(idx, 1);
-  }
+  
 }

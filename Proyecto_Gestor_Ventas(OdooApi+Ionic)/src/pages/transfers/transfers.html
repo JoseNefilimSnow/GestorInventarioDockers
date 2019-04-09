@@ -13,10 +13,10 @@
 
 <ion-content padding>
   <ion-list no-lines [virtualScroll]="transfArray">
-    <ion-item-sliding *virtualItem="let item; let i=index">
+    <ion-item-sliding *virtualItem="let transfArray; let i=index">
       <ion-item (click)="view(i)">
-        <h2>{{item.reference}}</h2>
-        <p>{{item.origin}}</p>
+        <h2>{{transfArray.reference}}</h2>
+        <p>{{transfArray.origin}}</p>
       </ion-item>
     </ion-item-sliding>
   </ion-list>

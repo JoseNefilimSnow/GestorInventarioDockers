@@ -19,23 +19,19 @@ export class TransfersPage {
     picking_type_id: number;
   }> = [];
 
-  private items: Array<{
-    id: number;
-    reference: string;
-    origin: string;
-    picking_type_id: number;
-  }> = [];
-
-  private transf = "stock.move";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
     this.display();
   }
+  /** Estos métodos guardan en el array a mostrar los elementos de la tabla de Transferencias */
 
+  /**
+   * Aqui se muestran las respuestas del servidor dentro de la tabla Transferencias y llama al método para rellenar array
+   */
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .getRecord(this.transf, [["picking_type_id", "!=", null]], [], 0, 0, "")
+      .getRecord("stock.move", [["picking_type_id", "!=", null]], [], 0, 0, "")
       .then((transf: any) => {
         this.utils.dismissLoading();
         this.fillParners(transf);
@@ -45,14 +41,14 @@ export class TransfersPage {
   private fillParners(transf: any): void {
     let json = JSON.parse(transf._body);
     if (!json.error) {
-      let query = json["result"].records;
+      let data = json["result"].records;
 
-      for (let i in query) {
+      for (let i in data) {
         this.transfArray.push({
-          id: query[i].id,
-          reference: query[i].reference == false ? "N/A" : query[i].reference,
-          origin: query[i].origin == false ? "N/A" : query[i].origin,
-          picking_type_id: query[i].picking_type_id == false ? "N/A" : query[i].picking_type_id
+          id: data[i].id,
+          reference: data[i].reference == false ? "N/A" : data[i].reference,
+          origin: data[i].origin == false ? "N/A" : data[i].origin,
+          picking_type_id: data[i].picking_type_id == false ? "N/A" : data[i].picking_type_id
         });
       }
     }
@@ -63,33 +59,5 @@ export class TransfersPage {
       id: this.transfArray[idx].id
     };
     this.navCtrl.push(TransfersViewPage, params);
-  }
-
-  initializeItems(): void {
-    this.transfArray = this.items;
-  }
-
-  getItems(searchbar) {
-    // Reset items back to all of the items
-    this.initializeItems();
-
-    // set q to the value of the searchbar
-    var q = searchbar.srcElement.value;
-
-    // if the value is an empty string don't filter the items
-    if (!q) {
-      return;
-    }
-
-    this.transfArray = this.transfArray.filter(v => {
-      if (v.reference && q) {
-        if (v.reference.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-          return true;
-        }
-        return false;
-      }
-    });
-
-    console.log(q, this.items.length);
   }
 }
