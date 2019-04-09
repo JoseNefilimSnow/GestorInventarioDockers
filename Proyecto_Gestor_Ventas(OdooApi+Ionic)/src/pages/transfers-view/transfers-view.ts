@@ -36,9 +36,9 @@ export class TransfersViewPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
     this.transf_id = navParams.get("id");
-    this.checkState();
     this.display();
   }
+
   private checkState(){
     console.log(this.state==="done");
     if(this.state==="done"){
@@ -48,14 +48,7 @@ export class TransfersViewPage {
     }
   }
 
-  // doRefresh(event) {
-  //   console.log('Begin async operation');
 
-  //   setTimeout(() => {
-  //     console.log('Async operation has ended');
-  //     event.target.complete();
-  //   }, 2000);
-  // }
 
   private display(): void {
     this.utils.presentLoading("Cargando...");
@@ -101,9 +94,9 @@ export class TransfersViewPage {
           });
         }
       });
+      this.checkState();
   }
 
- 
   private updateQty() {
     if (this.qty_done == null) {
       this.utils.presentAlert(
@@ -117,6 +110,7 @@ export class TransfersViewPage {
       this.odooRpc.updateRecord('stock.move', this.transf_id, { quantity_done: this.qty_done });
     }
   }
+
   private statusChange() {
     this.odooRpc.getRecord('stock.move', [["id", "=", this.transf_id]], [], 0, 0, "").then((res: any) => {
       console.log(JSON.parse(res._body));
@@ -126,7 +120,7 @@ export class TransfersViewPage {
         console.log(JSON.parse(res._body));
       });
     }).catch(err => { alert(err) });
-    this.data.splice(0,this.data.length);
-    this.constructor();
+    this.data=[];
+    this.display();
   }
 }

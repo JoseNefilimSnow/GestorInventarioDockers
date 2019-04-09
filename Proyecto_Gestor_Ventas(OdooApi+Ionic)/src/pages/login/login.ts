@@ -22,7 +22,7 @@ import {
 export class LoginPage {
   public odooUrl = "http://172.18.8.127:8069";
   private selectedDatabase = "ValperApp1";
-  private email;
+  private email; 
   private password;
   private advTools: Boolean = true;
 
