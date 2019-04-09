@@ -10,7 +10,7 @@ import { Network } from "@ionic-native/network";
 import { OdooJsonRpc } from "../services/odoojsonrpc";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
-import { ViewPage } from "../pages/view/view";
+import { SalesInvoiceViewPage } from "../pages/sales-invoice-view/sales-invoice-view";
 import { TransfersPage } from "../pages/transfers/transfers";
 import { TransfersViewPage } from "../pages/transfers-view/transfers-view";
 
@@ -20,7 +20,7 @@ import { TransfersViewPage } from "../pages/transfers-view/transfers-view";
     LoginPage,
     SalePage,
     SalesInvoicePage,
-    ViewPage,
+    SalesInvoiceViewPage,
     TransfersPage,
     TransfersViewPage
   ],
@@ -31,7 +31,7 @@ import { TransfersViewPage } from "../pages/transfers-view/transfers-view";
     LoginPage,
     SalePage,
     SalesInvoicePage,
-    ViewPage,
+    SalesInvoiceViewPage,
     TransfersPage,
     TransfersViewPage
   ],

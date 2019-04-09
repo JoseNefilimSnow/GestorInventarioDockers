@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Utils } from "../../services/utils";
-import { ViewPage } from "../view/view";
+import { SalesInvoiceViewPage } from "../sales-invoice-view/sales-invoice-view";
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
 import { Network } from "@ionic-native/network";
 
@@ -63,7 +63,7 @@ export class SalesInvoicePage {
     let params = {
       id: this.accountArray[idx].id
     };
-    this.navCtrl.push(ViewPage, params);
+    this.navCtrl.push(SalesInvoiceViewPage, params);
   }
   
 }

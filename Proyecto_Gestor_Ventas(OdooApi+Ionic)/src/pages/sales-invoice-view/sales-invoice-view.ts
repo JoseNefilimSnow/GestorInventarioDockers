@@ -6,9 +6,9 @@ import { Utils } from "../../services/utils";
 @IonicPage()
 @Component({
   selector: 'page-sale-invoice-view',
-  templateUrl: 'sale-invoice-view.html',
+  templateUrl: 'sales-invoice-view.html',
 })
-export class SaleInvoiceViewPage {
+export class SalesInvoiceViewPage {
 
   private invoice_id: number;
   private origin: string;

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
 import { Utils } from "../../services/utils";
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @IonicPage()
 @Component({
@@ -20,7 +19,7 @@ export class TransfersViewPage {
   private partner_id: number;
   private state: string;
   private qty_done: number;
-  private Swtch: boolean = false;
+  private Swtch: boolean = true;
 
   public data: Array<{
     id: number;
@@ -40,9 +39,12 @@ export class TransfersViewPage {
   }
 
   ionViewDidLoad(){
-    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then();
-    
+    this.odooRpc.getRecord("stock.move",[["id","=", this.transf_id]],[],0,0,"").then((res:any)=>{
+      this.state= JSON.parse(res._body)["result"].records[0].state;
+    });
+    this.data=[];
     this.checkState();
+    this.display();
   } 
 
   private checkState(){
@@ -123,6 +125,6 @@ export class TransfersViewPage {
       });
     }).catch(err => { alert(err) });
     this.data=[];
-    this.display();
+    this.ionViewDidLoad();
   }
 }
