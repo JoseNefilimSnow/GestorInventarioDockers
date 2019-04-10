@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+     Clientes
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list no-lines [virtualScroll]="clients">
+    <ion-item-sliding *virtualItem="let clients; let i=index">
+      <ion-item (click)="view(i)">
+        <h2>{{clients.name}}</h2>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
