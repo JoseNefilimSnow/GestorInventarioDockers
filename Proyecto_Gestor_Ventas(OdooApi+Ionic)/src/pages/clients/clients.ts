@@ -18,7 +18,9 @@ import {
 import {
   SalePage
 } from "../sale/sale";
-import { textDef } from '@angular/core/src/view';
+import {
+  textDef
+} from '@angular/core/src/view';
 /**
  * Generated class for the ClientsPage page.
  *
@@ -32,9 +34,9 @@ import { textDef } from '@angular/core/src/view';
   templateUrl: 'clients.html',
 })
 export class ClientsPage {
-  partner_id:number;
-  Nif:string;
-  Name:string;
+  partner_id: number;
+  Nif: string;
+  Name: string;
   private clients: Array < {
     id: number;
     name: string;
@@ -44,7 +46,7 @@ export class ClientsPage {
     this.display();
   }
 
-  
+
   /**
    * El método siguiente prueba si existe el usuario y crea la venta.
    */
@@ -57,28 +59,28 @@ export class ClientsPage {
       this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
         this.partner_id = JSON.parse(res._body)["result"].records[0].id;
         this.utils.dismissLoading();
-        this.view(this.partner_id);
+        this.view(JSON.parse(res._body)["result"].records[0].id);
       }).catch(err => {
         this.utils.presentAlert("Usuario no enontrado",
-          "El usuario no existe,¿Desea crearlo?",[{
+          "El usuario no existe,¿Desea crearlo?",[{ 
             text: "Crear",
-            handler : create =>{
-              this.odooRpc.createRecord('res.partner',{
-                vat:this.Nif,
-                name:create.Name
+            handler: create => {
+              this.odooRpc.createRecord('res.partner', {
+                vat: this.Nif,
+                name: create.Name
+              }).then((res:any)=>{
+                this.view(JSON.parse(res._body)["result"]);
               });
             }
-          }],"",true,[{
+          }
+          ], "", true, [{
             name: 'Name',
             placeholder: 'Nombre',
-            type:"text",
-            required:true
+            type: "text",
+            required: true
           }]
         );
-        this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
-          this.partner_id = JSON.parse(res._body)["result"].records[0].id;
-          this.view(this.partner_id);
-        });
+          
       })
     } else {
       this.utils.presentToast(
@@ -105,7 +107,7 @@ export class ClientsPage {
         this.utils.dismissLoading();
         this.fillParners(res);
       });
-      this.utils.dismissLoading();
+    this.utils.dismissLoading();
   }
 
   /**
