@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from "@angular/core";
 import { HttpModule } from "@angular/http";
 import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { LoginPage } from "../pages/login/login";
+import { ClientsPage } from "../pages/clients/clients";
 import { SalePage } from "../pages/sale/sale";
 import { SalesInvoicePage } from "../pages/sales-invoice/sales-invoice";
 import { MyApp } from "./app.component";
@@ -21,6 +22,7 @@ import { TransfersViewPage } from "../pages/transfers-view/transfers-view";
     SalePage,
     SalesInvoicePage,
     SalesInvoiceViewPage,
+    ClientsPage,
     TransfersPage,
     TransfersViewPage
   ],
@@ -33,7 +35,8 @@ import { TransfersViewPage } from "../pages/transfers-view/transfers-view";
     SalesInvoicePage,
     SalesInvoiceViewPage,
     TransfersPage,
-    TransfersViewPage
+    TransfersViewPage,
+    ClientsPage
   ],
   providers: [
     Network,

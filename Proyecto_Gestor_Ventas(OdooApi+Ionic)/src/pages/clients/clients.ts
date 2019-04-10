@@ -105,6 +105,7 @@ export class ClientsPage {
         this.utils.dismissLoading();
         this.fillParners(res);
       });
+      this.utils.dismissLoading();
   }
 
   /**
