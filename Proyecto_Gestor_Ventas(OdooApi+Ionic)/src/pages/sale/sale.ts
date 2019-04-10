@@ -52,11 +52,12 @@ export class SalePage {
   //Variables auxiliares
   private bool: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
+    this.partner_id = this.navParams.get("id");
+   }
 
   //** Los siguientes metodos crearan las bases de la venta en odoo */
 
-  F
   /**
    * El método siguiente prueba si existe el usuario y crea la venta.
    */

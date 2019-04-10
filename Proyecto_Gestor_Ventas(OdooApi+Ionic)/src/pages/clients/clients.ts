@@ -31,9 +31,9 @@ import {
   templateUrl: 'clients.html',
 })
 export class ClientsPage {
-  private accountArray: Array < {
+  private clients: Array < {
     id: number;
-    number: string;
+    name: string;
   } > = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
@@ -49,7 +49,7 @@ export class ClientsPage {
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .getRecord('account.invoice', [], [], 0, 0, "")
+      .getRecord('res.partner', [], [], 0, 0, "")
       .then((res: any) => {
         this.utils.dismissLoading();
         this.fillParners(res);
@@ -66,9 +66,9 @@ export class ClientsPage {
       let data = json["result"].records;
 
       for (let i in data) {
-        this.accountArray.push({
+        this.clients.push({
           id: data[i].id,
-          number: data[i].number == false ? "N/A" : data[i].number,
+          name: data[i].name == false ? "N/A" : data[i].name,
         });
       }
     }
@@ -80,7 +80,7 @@ export class ClientsPage {
 
   private view(idx: number): void {
     let params = {
-      id: this.accountArray[idx].id
+      id: this.clients[idx].id
     };
     this.navCtrl.push(SalePage, params);
   }
