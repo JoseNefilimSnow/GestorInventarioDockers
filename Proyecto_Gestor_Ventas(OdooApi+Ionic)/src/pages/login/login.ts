@@ -1,6 +1,6 @@
 import {
-  SalePage
-} from "../sale/sale";
+  ClientsPage
+} from "../clients/clients";
 import {
   OdooJsonRpc
 } from "../../services/odoojsonrpc";
@@ -52,7 +52,7 @@ export class LoginPage {
           logiData.password = this.password;
           localStorage.setItem("token", JSON.stringify(logiData));
           this.utils.dismissLoading();
-          this.navCtrl.setRoot(SalePage);
+          this.navCtrl.setRoot(ClientsPage);
         } else {
           this.utils.dismissLoading();
           this.utils.presentAlert(

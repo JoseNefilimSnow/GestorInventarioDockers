@@ -18,6 +18,7 @@ import {
 import {
   SalePage
 } from "../sale/sale";
+import { textDef } from '@angular/core/src/view';
 /**
  * Generated class for the ClientsPage page.
  *
@@ -31,6 +32,9 @@ import {
   templateUrl: 'clients.html',
 })
 export class ClientsPage {
+  partner_id:number;
+  Nif:string;
+  Name:string;
   private clients: Array < {
     id: number;
     name: string;
@@ -40,10 +44,57 @@ export class ClientsPage {
     this.display();
   }
 
-  /** Estos métodos guardan en el array a mostrar los elementos de la tabla de Facturas */
+  
+  /**
+   * El método siguiente prueba si existe el usuario y crea la venta.
+   */
+  private checkUser() {
+    if (this.Nif.length == 9) {
+      this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
+      let patrn = [
+        ["vat", "=", this.Nif]
+      ];
+      this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
+        this.partner_id = JSON.parse(res._body)["result"].records[0].id;
+        this.utils.dismissLoading();
+        this.view(this.partner_id);
+      }).catch(err => {
+        this.utils.presentAlert("Usuario no enontrado",
+          "El usuario no existe,¿Desea crearlo?",[{
+            text: "Crear",
+            handler : create =>{
+              this.odooRpc.createRecord('res.partner',{
+                vat:this.Nif,
+                name:create.Name
+              });
+            }
+          }],"",true,[{
+            name: 'Name',
+            placeholder: 'Nombre',
+            type:"text",
+            required:true
+          }]
+        );
+        this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
+          this.partner_id = JSON.parse(res._body)["result"].records[0].id;
+          this.view(this.partner_id);
+        });
+      })
+    } else {
+      this.utils.presentToast(
+        "El NIF introducido no es correcto",
+        2000,
+        true,
+        "top"
+      );
+    }
+  }
+
+
+  /** Estos métodos guardan en el array a mostrar los elementos de la tabla de Clientes */
 
   /**
-   * Aqui se muestran las respuestas del servidor dentro de la tabla Facturas y llama al método para rellenar array
+   * Aqui se muestran las respuestas del servidor dentro de la tabla Clientes y llama al método para rellenar array
    */
 
   private display(): void {
@@ -75,7 +126,7 @@ export class ClientsPage {
   }
 
   /** 
-   * Método que te abre cada instancia de Facturas
+   * Método que te abre cada instancia de Clientes
    */
 
   private view(idx: number): void {

@@ -13,16 +13,7 @@
 
 
 <ion-content padding>
-  <form (ngSubmit)="checkUser()">
-    <ion-item class="border-box">
-      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>
-    </ion-item>
-    <div class="spacer" style="height: 10px;"></div>
-    <button ion-button block round outline type="submit">
-      Comprobar
-    </button>
-  </form>
-  <div [hidden]="Swtch">
+  <div>
     <form (ngSubmit)="addProdToSale()">
       <ion-col align-self: center>
         <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>

@@ -59,40 +59,6 @@ export class SalePage {
   //** Los siguientes metodos crearan las bases de la venta en odoo */
 
   /**
-   * El método siguiente prueba si existe el usuario y crea la venta.
-   */
-  private checkUser() {
-    if (this.Nif.length == 9) {
-      this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
-      let patrn = [
-        ["vat", "=", this.Nif]
-      ];
-      this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
-        this.partner_id = JSON.parse(res._body)["result"].records[0].id;
-        this.Swtch = false;
-        this.utils.dismissLoading();
-        this.createSale();
-      }).catch(err => {
-        this.utils.presentToast(
-          "El usuario no existe",
-          2000,
-          true,
-          "top"
-        );
-        this.Swtch = true;
-        this.utils.dismissLoading();
-      })
-    } else {
-      this.utils.presentToast(
-        "El NIF introducido no es correcto",
-        2000,
-        true,
-        "top"
-      );
-    }
-  }
-
-  /**
    * Creo la venta en odoo como presupuesto vacio correspondiente al cliente anterior.
    */
   private createSale() {
