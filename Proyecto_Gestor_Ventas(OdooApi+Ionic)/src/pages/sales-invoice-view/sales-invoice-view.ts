@@ -73,9 +73,7 @@ export class SalesInvoiceViewPage {
       });
   }
   private statusPayed(){
-    this.odooRpc.updateRecord('account.invoice',this.invoice_id,{
-      state:"payed"
-    })
+    this.odooRpc.validateAndPay(this.invoice_id);
   }
 
 }

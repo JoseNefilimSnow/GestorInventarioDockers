@@ -15,7 +15,7 @@
   <ion-list no-lines [virtualScroll]="transfArray">
     <ion-item-sliding *virtualItem="let transfArray; let i=index">
       <ion-item (click)="view(i)">
-        <h2>{{transfArray.reference}}</h2>
+        <h1>{{transfArray.reference}}</h1>
         <p>{{transfArray.origin}}</p>
       </ion-item>
     </ion-item-sliding>

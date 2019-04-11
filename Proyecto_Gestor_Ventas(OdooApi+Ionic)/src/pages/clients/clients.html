@@ -6,25 +6,26 @@
       </button>
     </ion-buttons>
     <ion-title>
-     Clientes
+      Clientes
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <form (ngSubmit)="checkUser()">
-        <ion-item class="border-box">
-          <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>
-        </ion-item>
-        <div class="spacer" style="height: 10px;"></div>
-        <button ion-button block round outline type="submit">
-          Comprobar
-        </button>
-      </form>
+  <form (ngSubmit)="checkUser()">
+    <ion-item class="border-box">
+      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>
+    </ion-item>
+    <div class="spacer" style="height: 10px;"></div>
+    <button ion-button block round outline type="submit">
+      Comprobar
+    </button>
+  </form>
   <ion-list no-lines [virtualScroll]="clients">
     <ion-item-sliding *virtualItem="let clients; let i=index">
       <ion-item (click)="view(i)">
-        <h2>{{clients.name}}</h2>
+        <h1>{{clients.name}}</h1>
+        <p>{{clients.vat}}</p>
       </ion-item>
     </ion-item-sliding>
   </ion-list>

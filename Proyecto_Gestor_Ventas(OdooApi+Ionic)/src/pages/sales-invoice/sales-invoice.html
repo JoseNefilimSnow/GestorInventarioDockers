@@ -6,7 +6,7 @@
       </button>
     </ion-buttons>
     <ion-title>
-     Facturas
+      Facturas
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -15,7 +15,7 @@
   <ion-list no-lines [virtualScroll]="accountArray">
     <ion-item-sliding *virtualItem="let accountArray; let i=index">
       <ion-item (click)="view(i)">
-        <h2>{{accountArray.number}}</h2>
+        <h1>{{accountArray.number}}</h1>
       </ion-item>
     </ion-item-sliding>
   </ion-list>

@@ -1,6 +1,6 @@
 import {
-  SalePage
-} from "../sale/sale";
+  ClientsPage
+} from "../clients/clients";
 import {
   OdooJsonRpc
 } from "../../services/odoojsonrpc";
@@ -20,7 +20,7 @@ import {
   templateUrl: "login.html"
 })
 export class LoginPage {
-  public odooUrl = "http://172.18.8.49:8069";
+  public odooUrl = "http://172.18.8.127:8069";
   private selectedDatabase = "ValperApp";
   private email; 
   private password;
@@ -52,7 +52,7 @@ export class LoginPage {
           logiData.password = this.password;
           localStorage.setItem("token", JSON.stringify(logiData));
           this.utils.dismissLoading();
-          this.navCtrl.setRoot(SalePage);
+          this.navCtrl.setRoot(ClientsPage);
         } else {
           this.utils.dismissLoading();
           this.utils.presentAlert(

@@ -37,9 +37,11 @@ export class ClientsPage {
   partner_id: number;
   Nif: string;
   Name: string;
+  vat:string;
   private clients: Array < {
     id: number;
     name: string;
+    vat:string;
   } > = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
@@ -59,28 +61,32 @@ export class ClientsPage {
       this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
         this.partner_id = JSON.parse(res._body)["result"].records[0].id;
         this.utils.dismissLoading();
-        this.view(JSON.parse(res._body)["result"].records[0].id);
+        this.navCtrl.push(SalePage, {
+          id: this.partner_id
+        });
       }).catch(err => {
-        this.utils.presentAlert("Usuario no enontrado",
-          "El usuario no existe,¿Desea crearlo?",[{ 
-            text: "Crear",
-            handler: create => {
-              this.odooRpc.createRecord('res.partner', {
-                vat: this.Nif,
-                name: create.Name
-              }).then((res:any)=>{
-                this.view(JSON.parse(res._body)["result"]);
-              });
-            }
+        this.utils.dismissLoading();
+        this.utils.presentAlert("El Usuario no existe, ¿Desea crearlo?", "Introduzca el nombre y dele a crear o pulse fuera del recuadro para cancelar", [{
+          text: "Crear Cliente",
+          handler : create =>{
+            this.odooRpc.createRecord('res.partner',{
+              vat:this.Nif,
+              name:create.Name,
+              customer:true
+            }).then((res: any) => {
+              this.partner_id = JSON.parse(res._body)["result"];
+              this.navCtrl.push(SalePage, {
+          id: this.partner_id
+        });
+            });
           }
-          ], "", true, [{
-            name: 'Name',
-            placeholder: 'Nombre',
-            type: "text",
-            required: true
-          }]
-        );
-          
+        }],"",true,[{
+          name: 'Name',
+          placeholder: 'Nombre',
+          type:"text",
+          required:true
+        }]
+      );
       })
     } else {
       this.utils.presentToast(
@@ -118,12 +124,15 @@ export class ClientsPage {
     let json = JSON.parse(res._body);
     if (!json.error) {
       let data = json["result"].records;
-
+      console.log(JSON.parse(res._body));
       for (let i in data) {
-        this.clients.push({
-          id: data[i].id,
-          name: data[i].name == false ? "N/A" : data[i].name,
-        });
+        if (data[i].customer) {
+          this.clients.push({
+            id: data[i].id,
+            name: data[i].name == false ? "N/A" : data[i].name,
+            vat:data[i].vat == false ? "N/A": data[i].vat
+          });
+        }
       }
     }
   }

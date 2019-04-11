@@ -7,6 +7,7 @@ import { Network } from "@ionic-native/network";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { Utils } from "../services/utils";
 import { SalePage } from "../pages/sale/sale";
+import { ClientsPage } from "../pages/clients/clients";
 import { SalesInvoicePage } from "../pages/sales-invoice/sales-invoice";
 import { TransfersPage } from "../pages/transfers/transfers";
 
@@ -59,11 +60,11 @@ export class MyApp {
         });
         alrt.present();
       });
-      this.rootPage = SalePage;
+      this.rootPage = ClientsPage;
     }
     this.pages = [{
-      title: 'Página De Ventas',
-      component: SalePage
+      title: 'Página De Clientes',
+      component: ClientsPage
     }, {
       title: 'Facturas',
       component: SalesInvoicePage

@@ -1,6 +1,5 @@
 import {
-  Component,
-  Self
+  Component
 } from '@angular/core';
 import {
   IonicPage,
@@ -9,23 +8,14 @@ import {
   AlertController
 } from 'ionic-angular';
 import {
-  LoginPage
-} from "../login/login";
+  ClientsPage
+} from "../clients/clients";
 import {
   Utils
 } from "../../services/utils"
 import {
   OdooJsonRpc
 } from '../../services/odoojsonrpc';
-import {
-  NgIf
-} from '@angular/common';
-import {
-  CompileAnimationStateDeclarationMetadata
-} from '@angular/compiler';
-import {
-  checkAvailability
-} from '@ionic-native/core';
 
 @IonicPage()
 @Component({
@@ -35,10 +25,9 @@ import {
 export class SalePage {
 
   //Variables recogidas de la app:
-  private Nif; //Nif del cliente
   private Prod_ref; //Referencia del producto
   private Quantity = 1; //Cantidad del producto
-  private Swtch = true; //Boolean que controla la visibilidad del contenedor con entradas del producto
+  // private Swtch = true; //Boolean que controla la visibilidad del contenedor con entradas del producto
   //Variables recogidas de Odoo:
   private
   private partner_id; // Id de cliente
@@ -53,43 +42,13 @@ export class SalePage {
   //Variables auxiliares
   private bool: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
+    this.partner_id = navParams.get("id");
+    console.log("Cliente a tratar: "+ this.partner_id)
+    this.createSale();
+  }
 
   //** Los siguientes metodos crearan las bases de la venta en odoo */
-
-  F
-  /**
-   * El método siguiente prueba si existe el usuario y crea la venta.
-   */
-  private checkUser() {
-    if (this.Nif.length == 9) {
-      this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
-      let patrn = [
-        ["vat", "=", this.Nif]
-      ];
-      this.odooRpc.getRecord('res.partner', patrn, [], 0, 0, "").then((res: any) => {
-        this.partner_id = JSON.parse(res._body)["result"].records[0].id;
-        this.Swtch = false;
-        this.utils.dismissLoading();
-        this.createSale();
-      }).catch(err => {
-        this.utils.dismissLoading();
-        // this.utils.presentAlert("El Usuario no existe, ¿Desea crearlo?", "Introduzca el nombre y dele a crear o pulse Atras para cancelar", [{
-        //   text:"Crear Cliente",
-        //   handler: create =>{
-            
-        //   } 
-        // }]);
-      })
-    } else {
-      this.utils.presentToast(
-        "El NIF introducido no es correcto",
-        2000,
-        true,
-        "top"
-      );
-    }
-  }
 
   /**
    * Creo la venta en odoo como presupuesto vacio correspondiente al cliente anterior.
@@ -102,6 +61,7 @@ export class SalePage {
     }).then((res: any) => {
       this.order_id = JSON.parse(res._body)["result"];
       this.utils.dismissLoading();
+      console.log("Venta:" + JSON.parse(res._body))
       this.getAttributesOrder(); //Metodo auxiliar para obtener atributos
     }).catch((err: any) => {
       this.utils.dismissLoading();
@@ -219,9 +179,8 @@ export class SalePage {
   private endSale() {
     this.odooRpc.saleConfirm(this.order_id)
     this.odooRpc.createInvoiceForSale(this.invoice_id)
-    this.Nif = null;
     this.order_id = null;
-    this.Swtch = true;
+    // this.Swtch = true;
     this.Prod_ref = null;
     this.Quantity = 1;
     this.utils.presentToast(
@@ -230,6 +189,7 @@ export class SalePage {
       true,
       "top"
     );
+    this.navCtrl.setRoot(ClientsPage);
   }
 
   /**
@@ -237,9 +197,8 @@ export class SalePage {
    */
   private cancelSale() {
     this.odooRpc.deleteRecord('sale.order', this.order_id);
-    this.Nif = null;
     this.order_id = null;
-    this.Swtch = true;
+    // this.Swtch = true;
     this.Prod_ref = null;
     this.Quantity = 1;
     this.utils.presentToast(
@@ -248,6 +207,7 @@ export class SalePage {
       true,
       "top"
     );
+    this.navCtrl.setRoot(ClientsPage);
   }
 
 

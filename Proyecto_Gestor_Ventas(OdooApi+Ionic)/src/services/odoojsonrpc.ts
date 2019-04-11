@@ -225,12 +225,15 @@ export class OdooJsonRpc {
      */
 
     public createInvoiceForSale(invoice_id: number) {
-        this.call('account.invoice', "action_invoice_open", [invoice_id], {}).then((res: any) => {
-            console.log(JSON.parse(res._body))
-        });
+        this.call('account.invoice', "action_invoice_open", [invoice_id], {});
         //   this.call('account.payment', "action_invoice_open", [invoice_id], {}).then((res: any) => {
         //     console.log(JSON.parse(res._body))
         //   });
+    }
+    
+    public validateAndPay(invoice_id:number){
+        this.call('account.invoice',"invoice_validate",[invoice_id],{});
+        this.call('account.invoice',"action_invoice_paid",[invoice_id],{});
     }
 
     /** --------------------Otros metodos utiles ------------------*/
