@@ -1,5 +1,6 @@
 import {
-  Component, Self
+  Component,
+  Self
 } from '@angular/core';
 import {
   IonicPage,
@@ -45,14 +46,14 @@ export class SalePage {
   private order_name; // Nombre de la venta
   private order_date; //Fecha de creación de la venta
   private invoice_id // Id de la factura
-  private product_id;//Id de product
-  private product_name;//Nombre del producto
-  private product_price;//Precio del product
-  private payment_id;//Id payment
+  private product_id; //Id de product
+  private product_name; //Nombre del producto
+  private product_price; //Precio del product
+  private payment_id; //Id payment
   //Variables auxiliares
   private bool: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {}
 
   //** Los siguientes metodos crearan las bases de la venta en odoo */
 
@@ -72,14 +73,13 @@ export class SalePage {
         this.utils.dismissLoading();
         this.createSale();
       }).catch(err => {
-        this.utils.presentToast(
-          "El usuario no existe",
-          2000,
-          true,
-          "top"
-        );
-        this.Swtch = true;
         this.utils.dismissLoading();
+        // this.utils.presentAlert("El Usuario no existe, ¿Desea crearlo?", "Introduzca el nombre y dele a crear o pulse Atras para cancelar", [{
+        //   text:"Crear Cliente",
+        //   handler: create =>{
+            
+        //   } 
+        // }]);
       })
     } else {
       this.utils.presentToast(
@@ -134,11 +134,11 @@ export class SalePage {
    * Creamos una Factura que se vinculará a la venta
    */
 
-  private createAccountInvoice(){
+  private createAccountInvoice() {
     //Para crear una venta solo necesitamos tener el id del usuario, el documento de origen y la fecha de la venta. Posteriormente crearemos los productos en su interior.
     this.odooRpc.createRecord('account.invoice', {
       partner_id: this.partner_id,
-      origin:this.order_name,
+      origin: this.order_name,
       date_invoice: this.order_date
     }).then((res: any) => {
       this.invoice_id = JSON.parse(res._body)["result"];
@@ -197,13 +197,13 @@ export class SalePage {
    */
   private createInvoiceLine() {
     this.odooRpc.createRecord('account.invoice.line', {
-      name:this.product_name,
-      invoice_id:this.invoice_id,
+      name: this.product_name,
+      invoice_id: this.invoice_id,
       product_id: this.product_id,
       quantity: this.Quantity,
-      partner_id:this.partner_id,
-      account_id:480,
-      price_unit:this.product_price
+      partner_id: this.partner_id,
+      account_id: 480,
+      price_unit: this.product_price
     }).then((res: any) => {
       console.log(JSON.stringify(res));
       this.utils.dismissLoading();
@@ -212,7 +212,7 @@ export class SalePage {
     });
     this.Prod_ref = null;
     this.Quantity = 1;
-}
+  }
   /**
    * Este método finaliza la venta y la cambia de estado junto a la factura y resetea los valores a sus valores por defecto preaparados para realizar la siguiente venta
    */
@@ -250,5 +250,5 @@ export class SalePage {
     );
   }
 
-  
+
 }
