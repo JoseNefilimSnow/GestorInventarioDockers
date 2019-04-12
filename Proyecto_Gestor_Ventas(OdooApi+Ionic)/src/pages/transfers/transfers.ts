@@ -1,9 +1,24 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Utils } from "../../services/utils";
-import { TransfersViewPage } from "../transfers-view/transfers-view";
-import { OdooJsonRpc } from "../../services/odoojsonrpc";
-import { Network } from "@ionic-native/network";
+import {
+  Component
+} from '@angular/core';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  MenuController
+} from 'ionic-angular';
+import {
+  Utils
+} from "../../services/utils";
+import {
+  TransfersViewPage
+} from "../transfers-view/transfers-view";
+import {
+  OdooJsonRpc
+} from "../../services/odoojsonrpc";
+import {
+  Network
+} from "@ionic-native/network";
 
 @IonicPage()
 @Component({
@@ -12,15 +27,16 @@ import { Network } from "@ionic-native/network";
 })
 export class TransfersPage {
 
-  private transfArray: Array<{
+  private transfArray: Array < {
     id: number;
     reference: string;
     origin: string;
     picking_type_id: number;
-  }> = [];
+  } > = [];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
+  constructor(public navCtrl: NavController, private menu: MenuController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
+    this.menu.swipeEnable(true);
     this.display();
   }
   /** Estos métodos guardan en el array a mostrar los elementos de la tabla de Transferencias */
@@ -31,7 +47,9 @@ export class TransfersPage {
   private display(): void {
     this.utils.presentLoading("Cargando ...");
     this.odooRpc
-      .getRecord("stock.move", [["picking_type_id", "!=", null]], [], 0, 0, "")
+      .getRecord("stock.move", [
+        ["picking_type_id", "!=", null]
+      ], [], 0, 0, "")
       .then((transf: any) => {
         this.utils.dismissLoading();
         this.fillParners(transf);

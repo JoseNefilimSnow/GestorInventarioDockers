@@ -1,7 +1,17 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { OdooJsonRpc } from "../../services/odoojsonrpc";
-import { Utils } from "../../services/utils";
+import {
+  Component
+} from '@angular/core';
+import {
+  IonicPage,
+  NavController,
+  NavParams
+} from 'ionic-angular';
+import {
+  OdooJsonRpc
+} from "../../services/odoojsonrpc";
+import {
+  Utils
+} from "../../services/utils";
 
 @IonicPage()
 @Component({
@@ -17,14 +27,14 @@ export class SalesInvoiceViewPage {
   private date_due: string;
   private partner_id: number;
 
-  public data: Array<{
+  public data: Array < {
     id: number;
     origin: string;
     state: string;
     date_invoice: string;
     date_due: string;
     partner_id: number;
-  }> = [];
+  } > = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
@@ -32,26 +42,22 @@ export class SalesInvoiceViewPage {
     this.display();
   }
 
-  ionViewDidLoad(){
+  ionViewDidLoad() {
 
   }
-  
+
   private display(): void {
     this.utils.presentLoading("Cargando...");
-    let account = "account.invoice";
-    let fields = [
-      "origin",
-      "state",
-      "date_invoice",
-      "date_due",
-      "partner_id"
-    ];
-    let domain = [["id", "=", this.invoice_id]];
-    let sort = "";
-    let limit = 0;
-    let offset = 0;
     this.odooRpc
-      .getRecord(account, domain, fields, limit, offset, sort)
+      .getRecord("account.invoice", [
+        ["id", "=", this.invoice_id]
+      ], [
+        "origin",
+        "state",
+        "date_invoice",
+        "date_due",
+        "partner_id"
+      ], 0, 0, "")
       .then((res: any) => {
         this.utils.dismissLoading();
         let data = JSON.parse(res._body)["result"].records;
@@ -72,7 +78,8 @@ export class SalesInvoiceViewPage {
         }
       });
   }
-  private statusPayed(){
+  private statusPayed() {
+    console.log("Id de ventas" + this.invoice_id)
     this.odooRpc.validateAndPay(this.invoice_id);
   }
 

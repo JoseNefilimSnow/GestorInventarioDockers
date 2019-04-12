@@ -5,7 +5,8 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  AlertController
+  AlertController,
+  MenuController
 } from 'ionic-angular';
 import {
   ClientsPage
@@ -42,8 +43,9 @@ export class SalePage {
   //Variables auxiliares
   private bool: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
+  constructor(public navCtrl: NavController,private menu:MenuController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
     this.partner_id = navParams.get("id");
+    this.menu.swipeEnable(true);
     console.log("Cliente a tratar: "+ this.partner_id)
     this.createSale();
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { Utils } from "../../services/utils";
 import { SalesInvoiceViewPage } from "../sales-invoice-view/sales-invoice-view";
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
@@ -17,7 +17,8 @@ export class SalesInvoicePage {
     number: string;
   }> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
+  constructor(public navCtrl: NavController,private menu:MenuController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
+    this.menu.swipeEnable(true);
     this.display();
   }
 

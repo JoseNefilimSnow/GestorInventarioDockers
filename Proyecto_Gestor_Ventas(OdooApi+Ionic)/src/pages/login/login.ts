@@ -9,7 +9,8 @@ import {
 } from "@angular/core";
 import {
   NavController,
-  NavParams
+  NavParams,
+  MenuController
 } from "ionic-angular";
 import {
   Utils
@@ -20,7 +21,7 @@ import {
   templateUrl: "login.html"
 })
 export class LoginPage {
-  public odooUrl = "http://172.18.8.127:8069";
+  public odooUrl = "http://172.18.8.49:8069";
   private selectedDatabase = "ValperApp";
   private email; 
   private password;
@@ -30,9 +31,10 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private odooRpc: OdooJsonRpc,
-    private utils: Utils
+    private utils: Utils,
+    private menu: MenuController
   ) {
-
+    this.menu.swipeEnable(false);
   }
 
   public reinit() {

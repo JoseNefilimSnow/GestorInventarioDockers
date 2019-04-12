@@ -24,7 +24,7 @@
   <ion-list no-lines [virtualScroll]="clients">
     <ion-item-sliding *virtualItem="let clients; let i=index">
       <ion-item (click)="view(i)">
-        <h1>{{clients.name}}</h1>
+        <h2>{{clients.name}}</h2>
         <p>{{clients.vat}}</p>
       </ion-item>
     </ion-item-sliding>

@@ -4,7 +4,8 @@ import {
 import {
   IonicPage,
   NavController,
-  NavParams
+  NavParams,
+  MenuController
 } from 'ionic-angular';
 import {
   Utils
@@ -44,7 +45,8 @@ export class ClientsPage {
     vat:string;
   } > = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private network: Network, private utils: Utils, private menu:MenuController) {
+    this.menu.swipeEnable(true);
     this.display();
   }
 
