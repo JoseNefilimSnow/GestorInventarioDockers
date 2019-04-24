@@ -82,14 +82,13 @@ export class OdooJsonRpc {
      * @param params Objeto
      */
     public sendRequest(url: string, params: Object): Promise<any> {
-        let options = this.buildRequest(url, params);
+        let options = this.buildRequest(params);
         let token = localStorage.getItem("token");
         this.headers = new Headers({
             'Content-Type': 'application/json; charset=utf-8',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods':'POST,GET,OPTIONS',
-            'Access-Control-Max-Age': '1000',
-            'Access-Control-Allow-Headers':'origin, Content-Type, accept',
+            'access-control-allow-origin': '*',
+            'access-control-allow-methods':'POST,OPTIONS',
+            'access-control-allow-headers':'Content-Type, access-control-allow-origin, accept',
         });
 
         let result = this.http.post(this.odoo_server + url, options, { headers: this.headers })
@@ -102,7 +101,7 @@ export class OdooJsonRpc {
      * @param url Url Odoo
      * @param params Objeto
      */
-    private buildRequest(url: String, params: any) {
+    private buildRequest(params: any) {
         this.jsonRpcID += 1;
         return JSON.stringify({
             jsonrpc: "2.0",

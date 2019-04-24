@@ -21,7 +21,7 @@ import {
   templateUrl: "login.html"
 })
 export class LoginPage {
-  public odooUrl = "http://172.18.8.49:8069";
+  public odooUrl = "http://172.18.8.25:8069";
   private selectedDatabase = "ValperApp";
   private email; 
   private password;
@@ -48,7 +48,7 @@ export class LoginPage {
     this.odooRpc
       .login(this.selectedDatabase, this.email, this.password)
       .then((res: any) => {
-        console.log(JSON.parse(res._body)["result"].partner_id);
+        console.log(JSON.parse(res._body));
         if (Number(JSON.parse(res._body)["result"].partner_id)) {
           let logiData: any = JSON.parse(res._body)["result"];
           logiData.password = this.password;
@@ -89,4 +89,5 @@ export class LoginPage {
     this.odooUrl = this.odooUrl;
     this.advancedTools();
   }
+
 }

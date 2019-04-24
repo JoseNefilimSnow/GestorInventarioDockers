@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ViewController,MenuController } from 'ionic-angular';
 import { OdooJsonRpc } from "../../services/odoojsonrpc";
 import { Utils } from "../../services/utils";
 
@@ -21,6 +21,7 @@ export class TransfersViewPage {
   private qty_done: number;
   private Swtch: boolean = true;
 
+
   public data: Array<{
     id: number;
     picking_type_id: number;
@@ -33,10 +34,12 @@ export class TransfersViewPage {
   }> = [];
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
+  constructor(private viewCtrl: ViewController, private menu: MenuController, public navCtrl: NavController, public navParams: NavParams, public odooRpc: OdooJsonRpc, public utils: Utils) {
+    this.menu.swipeEnable(true);
     this.transf_id = this.navParams.get("id");
-    this.display();
   }
+
+
 
   private checkState(state: string) {
     console.log(state === "done");
@@ -96,10 +99,10 @@ export class TransfersViewPage {
   }
 
   private updateQty() {
-    if (this.qty_done == null) {
+    if (this.qty_done == null||this.qty_done>this.ordered_qty) {
       this.utils.presentAlert(
         "Error",
-        "Cantidad a entregar no puede ser nula",
+        "Cantidad a entregar no puede ser nula o superior a la cantidad pedida",
         [{
           text: "Ok"
         }]
@@ -118,15 +121,7 @@ export class TransfersViewPage {
         console.log(JSON.parse(res._body));
       });
     }).catch(err => { alert(err) });
-    this.picking_type_id = null;
-    this.origin = null;
-    this.reference = null;
-    this.name = null;
-    this.ordered_qty = null;
-    this.partner_id = null;
-    this.state = null;
-    this.qty_done = null;
-    this.data = [];
-    this.display();
+    this.data.pop();
+    this.navCtrl.push(TransfersViewPage);
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "Gestor de Ventas",
+  "short_name": "GdV",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/imgs/valper.jpg",
+    "sizes": "512x512",
+    "type": "image/jpg"
+  }],
+  "background_color": "#3b82f7",
+  "theme_color": "#3b82f7"
+}

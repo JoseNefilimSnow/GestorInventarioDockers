@@ -19,9 +19,6 @@ import {
 import {
   SalePage
 } from "../sale/sale";
-import {
-  textDef
-} from '@angular/core/src/view';
 /**
  * Generated class for the ClientsPage page.
  *
@@ -55,7 +52,7 @@ export class ClientsPage {
    * El método siguiente prueba si existe el usuario y crea la venta.
    */
   private checkUser() {
-    if (this.Nif.length == 9) {
+    if (this.Nif.length == 9 && this.checkNif(this.Nif)) {
       this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
       let patrn = [
         ["vat", "=", this.Nif]
@@ -76,6 +73,7 @@ export class ClientsPage {
               name:create.Name,
               customer:true
             }).then((res: any) => {
+              console.log(JSON.parse(res._body));
               this.partner_id = JSON.parse(res._body)["result"];
               this.navCtrl.push(SalePage, {
           id: this.partner_id
@@ -149,5 +147,27 @@ export class ClientsPage {
     };
     this.navCtrl.push(SalePage, params);
   }
-
+  private checkNif(dni):boolean {
+    var numero
+    var letr
+    var letra
+    var expresion_regular_dni
+   
+    expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
+   
+    if(expresion_regular_dni.test (dni) == true){
+       numero = dni.substr(0,dni.length-1);
+       letr = dni.substr(dni.length-1,1);
+       numero = numero % 23;
+       letra='TRWAGMYFPDXBNJZSQVHLCKET';
+       letra=letra.substring(numero,numero+1);
+      if (letra!=letr.toUpperCase()) {
+         return false;
+       }else{
+         return true;
+       }
+    }else{
+      return false;
+     }
+  }
 }

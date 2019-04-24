@@ -1,0 +1,6 @@
+{
+  "appId": "com.vlp.odoojsonrpc",
+  "appName": "Gestor de Ventas",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}
