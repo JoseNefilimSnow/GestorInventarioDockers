@@ -56,8 +56,19 @@
             </ion-row>
           </ion-card-content>
         </ion-card>
-        <button ion-button block round outline (click)="statusPayed()">Finalizar
-        </button>
+      </div>
+
+
+      <div [hidden]="Swtch">
+        <div [hidden]="Swtch_1">
+          <ion-card>
+            <ion-card-content>
+              <ion-row><button ion-button block round outline (click)="ef()">Efectivo</button></ion-row>
+              <ion-row><button ion-button block round outline (click)="tar()">Tarjeta</button></ion-row>
+            </ion-card-content>
+          </ion-card>
+        </div>
+        <button ion-button block round outline (click)="statusPayed()">Finalizar</button>
       </div>
     </ion-list>
   </div>

@@ -235,8 +235,8 @@ export class OdooJsonRpc {
         //   });
     }
     
-    public validateAndPay(invoice_id:number){
-        this.call('account.invoice',"pay_and_reconcile",[invoice_id, 7],{});
+    public validateAndPay(invoice_id:number,int:number){
+        this.call('account.invoice',"pay_and_reconcile",[invoice_id, int],{});
     }
 
     /** --------------------Otros metodos utiles ------------------*/

@@ -229,8 +229,19 @@ var SalesInvoiceViewPage = (function () {
     }
     SalesInvoiceViewPage.prototype.ionViewDidLoad = function () {
     };
+    SalesInvoiceViewPage.prototype.ef = function () {
+        this.e = true;
+        this.Swtch_1 = true;
+    };
+    SalesInvoiceViewPage.prototype.tar = function () {
+        this.t = true;
+        this.Swtch_1 = true;
+    };
     SalesInvoiceViewPage.prototype.display = function () {
         var _this = this;
+        this.odooRpc.getRecord("account.invoice", [["id", "=", this.invoice_id]], [], 0, 0, "").then(function (res) {
+            _this.checkState(_this.state = JSON.parse(res._body)["result"].records[0].state);
+        });
         this.utils.presentLoading("Cargando...");
         this.odooRpc
             .getRecord("account.invoice", [
@@ -262,15 +273,37 @@ var SalesInvoiceViewPage = (function () {
             }
         });
     };
+    SalesInvoiceViewPage.prototype.checkState = function (state) {
+        console.log(state === "paid");
+        if (state === "paid") {
+            this.Swtch = true;
+            this.Swtch_1 = true;
+        }
+        else {
+            this.Swtch = false;
+            this.Swtch_1 = false;
+        }
+    };
     SalesInvoiceViewPage.prototype.statusPayed = function () {
         console.log("Id de ventas" + this.invoice_id);
-        this.odooRpc.validateAndPay(this.invoice_id);
+        console.log(this.e);
+        console.log(this.t);
+        if (this.e) {
+            this.odooRpc.validateAndPay(this.invoice_id, 7);
+        }
+        else if (this.t) {
+            this.odooRpc.validateAndPay(this.invoice_id, 8);
+        }
+        else {
+            console.log("No esta seleccionada ninguna opcion");
+        }
+        this.Swtch = true;
     };
     return SalesInvoiceViewPage;
 }());
 SalesInvoiceViewPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-sale-invoice-view',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Factura\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de la Factura:</ion-col>\n\n              <ion-col>{{item.date_invoice}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de Vencimiento:</ion-col>\n\n              <ion-col>{{item.date_due}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <button ion-button block round outline (click)="statusPayed()">Finalizar\n\n        </button>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/,
+        selector: 'page-sale-invoice-view',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Factura\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de la Factura:</ion-col>\n\n              <ion-col>{{item.date_invoice}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de Vencimiento:</ion-col>\n\n              <ion-col>{{item.date_due}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n      </div>\n\n\n\n\n\n      <div [hidden]="Swtch">\n\n        <div [hidden]="Swtch_1">\n\n          <ion-card>\n\n            <ion-card-content>\n\n              <ion-row><button ion-button block round outline (click)="ef()">Efectivo</button></ion-row>\n\n              <ion-row><button ion-button block round outline (click)="tar()">Tarjeta</button></ion-row>\n\n            </ion-card-content>\n\n          </ion-card>\n\n        </div>\n\n        <button ion-button block round outline (click)="statusPayed()">Finalizar</button>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_3__services_utils__["a" /* Utils */]])
 ], SalesInvoiceViewPage);
@@ -1153,9 +1186,8 @@ var OdooJsonRpc = (function () {
         //     console.log(JSON.parse(res._body))
         //   });
     };
-    OdooJsonRpc.prototype.validateAndPay = function (invoice_id) {
-        this.call('account.invoice', "pay_and_reconcile", [invoice_id, 7], {});
-        // this.call('account.invoice',"action_invoice_paid",[invoice_id],{});
+    OdooJsonRpc.prototype.validateAndPay = function (invoice_id, int) {
+        this.call('account.invoice', "pay_and_reconcile", [invoice_id, int], {});
     };
     /** --------------------Otros metodos utiles ------------------*/
     /**
