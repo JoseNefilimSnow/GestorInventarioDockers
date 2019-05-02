@@ -41,12 +41,14 @@ export class SalePage {
   private product_price; //Precio del product
   private payment_id; //Id payment
   //Variables auxiliares
-  private bool: boolean;
+  private count: number = 0;
+  private total: number = 0;
+  private prodsArray: Array <{name:String,price:Number}> = [];
 
-  constructor(public navCtrl: NavController,private menu:MenuController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
+  constructor(public navCtrl: NavController, private menu: MenuController, public navParams: NavParams, private odooRpc: OdooJsonRpc, private utils: Utils, public alert: AlertController) {
     this.partner_id = navParams.get("id");
     this.menu.swipeEnable(true);
-    console.log("Cliente a tratar: "+ this.partner_id)
+    console.log("Cliente a tratar: " + this.partner_id)
     this.createSale();
   }
 
@@ -118,6 +120,7 @@ export class SalePage {
    */
 
   private addProdToSale() {
+    console.log("total al principio:"+this.total)
     this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
     let patrn = [
       ["barcode", "=", this.Prod_ref]
@@ -127,7 +130,8 @@ export class SalePage {
       this.product_id = Number(JSON.parse(res._body)["result"].records[0].id);
       this.product_name = String(JSON.parse(res._body)["result"].records[0].name);
       this.product_price = Number(JSON.parse(res._body)["result"].records[0].list_price);
-      // let boolean = this.checkAviability();
+      this.prodsArray[this.count]={name:this.product_name,price:(this.product_price*this.Quantity)};
+      this.total= this.total + (this.product_price*this.Quantity);
       this.createSaleOrderLine();
     }).catch(err => {
       this.utils.dismissLoading();
@@ -138,6 +142,8 @@ export class SalePage {
         "top"
       );
     });
+    this.count++;
+    console.log("total al final:"+this.total)
   }
   /**
    * Este método crea una linea que contiene los prodcutos y se asignan a la venta anterior junto a la cantidad del mismo

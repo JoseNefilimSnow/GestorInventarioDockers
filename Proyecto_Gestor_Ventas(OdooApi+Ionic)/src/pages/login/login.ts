@@ -79,10 +79,10 @@ export class LoginPage {
       });
   }
   private advancedTools() {
-    if (this.advTools) {
-      this.advTools = false;
-    } else {
-      this.advTools = true;
+    if(this.advTools){
+      this.advTools=false;
+    }else{
+      this.advTools=true;
     }
   }
   private setIp() {

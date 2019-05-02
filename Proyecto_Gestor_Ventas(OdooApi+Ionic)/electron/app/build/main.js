@@ -1,6 +1,105 @@
-webpackJsonp([6],{
+webpackJsonp([7],{
 
 /***/ 133:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clients_clients__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_utils__ = __webpack_require__(34);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var LoginPage = (function () {
+    function LoginPage(navCtrl, navParams, odooRpc, utils, menu) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.odooRpc = odooRpc;
+        this.utils = utils;
+        this.menu = menu;
+        this.odooUrl = "http://172.18.8.25:8069";
+        this.selectedDatabase = "ValperApp";
+        this.advTools = true;
+        this.menu.swipeEnable(false);
+    }
+    LoginPage.prototype.reinit = function () {
+        this.odooRpc.init({
+            odoo_server: this.odooUrl,
+            http_auth: "username:password"
+        });
+    };
+    LoginPage.prototype.login = function () {
+        var _this = this;
+        this.utils.presentLoading("Iniciando Sesión", 0, true);
+        this.odooRpc
+            .login(this.selectedDatabase, this.email, this.password)
+            .then(function (res) {
+            console.log(JSON.parse(res._body));
+            if (Number(JSON.parse(res._body)["result"].partner_id)) {
+                var logiData = JSON.parse(res._body)["result"];
+                logiData.password = _this.password;
+                localStorage.setItem("token", JSON.stringify(logiData));
+                _this.utils.dismissLoading();
+                _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__clients_clients__["a" /* ClientsPage */]);
+            }
+            else {
+                _this.utils.dismissLoading();
+                _this.utils.presentAlert("Error", "El usuario no existe", [{
+                        text: "Ok"
+                    }]);
+            }
+        })
+            .catch(function (err) {
+            _this.utils.dismissLoading();
+            _this.utils.presentAlert("Error", "El usuario o contraseña deben ser incorrectos", [{
+                    text: "Ok"
+                }]);
+        });
+    };
+    LoginPage.prototype.advancedTools = function () {
+        if (this.advTools) {
+            this.advTools = false;
+        }
+        else {
+            this.advTools = true;
+        }
+    };
+    LoginPage.prototype.setIp = function () {
+        this.odooUrl = this.odooUrl;
+        this.advancedTools();
+    };
+    return LoginPage;
+}());
+LoginPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* Component */])({
+        selector: "page-login",template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\login\login.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title> Inicio de Sesión </ion-title>\n\n    <ion-buttons end>\n\n      <button ion-button icon-only (click)="advancedTools()">\n\n        <ion-icon name="construct"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content class="background">\n\n  <div text-center>\n\n    <img src="assets/imgs/ValperApp.png" alt="No Image" />\n\n  </div>\n\n\n\n  <ion-card>\n\n    <div>\n\n      <form (ngSubmit)="login()" #registerForm="ngForm">\n\n        <div class="spacer" style="height: 10px;"></div>\n\n\n\n        <ion-item class="border-box">\n\n          <ion-input type="email" placeholder="Usuario(Email)" [(ngModel)]="email" name="email" required></ion-input>\n\n        </ion-item>\n\n        <div class="spacer" style="height: 10px;"></div>\n\n\n\n        <ion-item class="border-box">\n\n          <ion-input type="password" [(ngModel)]="password" name="pass" placeholder="Contraseña" required></ion-input>\n\n        </ion-item>\n\n        <div class="spacer" style="height: 10px;"></div>\n\n        <button ion-button block round outline type="submit" (click)="reinit()">\n\n          Iniciar Sesión\n\n        </button>\n\n      </form>\n\n    </div>\n\n  </ion-card>\n\n  <div [hidden]="advTools">\n\n    <ion-input type="text" placeholder="Url Odoo" [(ngModel)]="odooUrl" name="odooUrl" required></ion-input>\n\n    <button ion-button block round outline (click)="setIp()">\n\n      Guardar configuración\n\n    </button>\n\n  </div>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\login\login.html"*/
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__["a" /* OdooJsonRpc */],
+        __WEBPACK_IMPORTED_MODULE_4__services_utils__["a" /* Utils */],
+        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* MenuController */]])
+], LoginPage);
+
+//# sourceMappingURL=login.js.map
+
+/***/ }),
+
+/***/ 134:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,8 +107,8 @@ webpackJsonp([6],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__clients_clients__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -33,6 +132,10 @@ var SalePage = (function () {
         this.utils = utils;
         this.alert = alert;
         this.Quantity = 1; //Cantidad del producto
+        //Variables auxiliares
+        this.count = 0;
+        this.total = 0;
+        this.prodsArray = [];
         this.partner_id = navParams.get("id");
         this.menu.swipeEnable(true);
         console.log("Cliente a tratar: " + this.partner_id);
@@ -105,19 +208,21 @@ var SalePage = (function () {
         var _this = this;
         this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.");
         var patrn = [
-            ["default_code", "=", this.Prod_ref]
+            ["barcode", "=", this.Prod_ref]
         ];
         this.odooRpc.getRecord('product.template', patrn, [], 0, 0, "").then(function (res) {
             _this.utils.dismissLoading();
             _this.product_id = Number(JSON.parse(res._body)["result"].records[0].id);
             _this.product_name = String(JSON.parse(res._body)["result"].records[0].name);
             _this.product_price = Number(JSON.parse(res._body)["result"].records[0].list_price);
-            // let boolean = this.checkAviability();
+            _this.prodsArray[_this.count] = { name: _this.product_name, price: _this.product_price };
+            _this.total = _this.total + _this.product_price;
             _this.createSaleOrderLine();
         }).catch(function (err) {
             _this.utils.dismissLoading();
             _this.utils.presentToast("El producto no existe", 2500, true, "top");
         });
+        this.count++;
     };
     /**
      * Este método crea una linea que contiene los prodcutos y se asignan a la venta anterior junto a la cantidad del mismo
@@ -186,7 +291,7 @@ var SalePage = (function () {
 }());
 SalePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-sale',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sale\sale.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Realizar Venta\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <!-- <div [hidden]="Swtch"> -->\n\n  <div>\n\n    <form (ngSubmit)="addProdToSale()">\n\n      <ion-col align-self: center>\n\n        <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>\n\n        <ion-input type="number" placeholder="Cantidad" name="Quantity" [(ngModel)]="Quantity"></ion-input>\n\n        <button ion-button block round outline type="submit">Añadir Producto</button>\n\n      </ion-col>\n\n    </form>\n\n    <ion-row>\n\n      <ion-col col-6>\n\n        <button ion-button block round outline (click)="cancelSale()">Cancelar</button>\n\n      </ion-col>\n\n      <ion-col col-6>\n\n        <button ion-button block round outline (click)="endSale()">Finalizar</button>\n\n      </ion-col>\n\n    </ion-row>\n\n  </div>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sale\sale.html"*/,
+        selector: 'page-sale',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sale\sale.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Realizar Venta\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <!-- <div [hidden]="Swtch"> -->\n\n  <div>\n\n    <form (ngSubmit)="addProdToSale()">\n\n      <ion-col align-self: center>\n\n        <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>\n\n        <ion-input type="number" placeholder="Cantidad" name="Quantity" [(ngModel)]="Quantity"></ion-input>\n\n        <button ion-button block round outline type="submit">Añadir Producto</button>\n\n      </ion-col>\n\n    </form>\n\n    <ion-label name="total">Precio Total:</ion-label>\n\n    <ion-input type="number" name="total" [readonly]=true></ion-label>\n\n      <ion-list no-lines [virtualScroll]="prodsArray">\n\n        <ion-item-sliding *virtualItem="let prodsArray">\n\n          <ion-item>\n\n            <h2>{{prodsArray.name}}</h2>\n\n            <h3>{{prodsArray.price}}</h3>\n\n          </ion-item>\n\n        </ion-item-sliding>\n\n      </ion-list>\n\n    <ion-row>\n\n      <ion-col col-6>\n\n        <button ion-button block round outline (click)="cancelSale()">Cancelar</button>\n\n      </ion-col>\n\n      <ion-col col-6>\n\n        <button ion-button block round outline (click)="endSale()">Finalizar</button>\n\n      </ion-col>\n\n    </ion-row>\n\n  </div>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sale\sale.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_3__services_utils__["a" /* Utils */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */]])
 ], SalePage);
@@ -195,15 +300,15 @@ SalePage = __decorate([
 
 /***/ }),
 
-/***/ 134:
+/***/ 135:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SalesInvoiceViewPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(34);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -303,7 +408,7 @@ var SalesInvoiceViewPage = (function () {
 }());
 SalesInvoiceViewPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-sale-invoice-view',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Factura\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de la Factura:</ion-col>\n\n              <ion-col>{{item.date_invoice}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de Vencimiento:</ion-col>\n\n              <ion-col>{{item.date_due}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n      </div>\n\n\n\n\n\n      <div [hidden]="Swtch">\n\n        <div [hidden]="Swtch_1">\n\n          <ion-card>\n\n            <ion-card-content>\n\n              <ion-row><button ion-button block round outline (click)="ef()">Efectivo</button></ion-row>\n\n              <ion-row><button ion-button block round outline (click)="tar()">Tarjeta</button></ion-row>\n\n            </ion-card-content>\n\n          </ion-card>\n\n        </div>\n\n        <button ion-button block round outline (click)="statusPayed()">Finalizar</button>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/,
+        selector: 'page-sale-invoice-view',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Factura\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de la Factura:</ion-col>\n\n              <ion-col>{{item.date_invoice}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Fecha de Vencimiento:</ion-col>\n\n              <ion-col>{{item.date_due}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n      </div>\n\n\n\n\n\n      <div [hidden]="Swtch">\n\n        <div [hidden]="Swtch_1">\n\n          <ion-card>\n\n            <ion-card-content>\n\n              <ion-row><button ion-button block round outline (click)="ef()">Efectivo</button></ion-row>\n\n              <ion-row><button ion-button block round outline (click)="tar()">Tarjeta</button></ion-row>\n\n            </ion-card-content>\n\n          </ion-card>\n\n        </div>\n\n        <button ion-button block round outline (click)="statusPayed()">Finalizar</button>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice-view\sales-invoice-view.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_3__services_utils__["a" /* Utils */]])
 ], SalesInvoiceViewPage);
@@ -312,16 +417,16 @@ SalesInvoiceViewPage = __decorate([
 
 /***/ }),
 
-/***/ 135:
+/***/ 136:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SalesInvoicePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sales_invoice_view_sales_invoice_view__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sales_invoice_view_sales_invoice_view__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -392,7 +497,7 @@ var SalesInvoicePage = (function () {
 }());
 SalesInvoicePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-sales-invoice',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice\sales-invoice.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Facturas\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <ion-list no-lines [virtualScroll]="accountArray">\n\n    <ion-item-sliding *virtualItem="let accountArray; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{accountArray.number}}</h2>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice\sales-invoice.html"*/,
+        selector: 'page-sales-invoice',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice\sales-invoice.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Facturas\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <ion-list no-lines [virtualScroll]="accountArray">\n\n    <ion-item-sliding *virtualItem="let accountArray; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{accountArray.number}}</h2>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\sales-invoice\sales-invoice.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_2__services_utils__["a" /* Utils */]])
 ], SalesInvoicePage);
@@ -401,15 +506,15 @@ SalesInvoicePage = __decorate([
 
 /***/ }),
 
-/***/ 136:
+/***/ 137:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TransfersViewPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_utils__ = __webpack_require__(34);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -513,7 +618,7 @@ var TransfersViewPage = TransfersViewPage_1 = (function () {
 }());
 TransfersViewPage = TransfersViewPage_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-transfers-view',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers-view\transfers-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Transferencia\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">\n\n    <ion-refresher-content>\n\n\n\n    </ion-refresher-content>\n\n  </ion-refresher> -->\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Producto:</ion-col>\n\n              <ion-col>{{item.name}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Cantidad:</ion-col>\n\n              <ion-col>{{item.ordered_qty}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Tipo transferencia:</ion-col>\n\n              <ion-col>{{item.picking_type_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado de transferencia:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <div [hidden]="Swtch">\n\n          <form (ngSubmit)="updateQty()">\n\n            <ion-card>\n\n              <ion-card-content>\n\n                <ion-row>\n\n                  <ion-col class="spec">Cantidad a entregar:</ion-col>\n\n                  <ion-col>\n\n                    <ion-input type="number" name="qty_done" placeholder="Introduce un numero" [(ngModel)]="qty_done"></ion-input>\n\n                  </ion-col>\n\n                </ion-row>\n\n              </ion-card-content>\n\n            </ion-card>\n\n            <button ion-button block round outline type="submit">\n\n              Actualizar Cantidades\n\n            </button>\n\n          </form>\n\n          <button ion-button block round outline (click)="statusChange()">\n\n            Finalizar\n\n          </button>\n\n        </div>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers-view\transfers-view.html"*/,
+        selector: 'page-transfers-view',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers-view\transfers-view.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>\n\n      Detalles de Transferencia\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">\n\n    <ion-refresher-content>\n\n\n\n    </ion-refresher-content>\n\n  </ion-refresher> -->\n\n  <div class="main-cnt">\n\n    <ion-list>\n\n      <div *ngFor="let item of data">\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Documento de Origen:</ion-col>\n\n              <ion-col>{{item.origin}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Producto:</ion-col>\n\n              <ion-col>{{item.name}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Cantidad:</ion-col>\n\n              <ion-col>{{item.ordered_qty}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Id de Cliente:</ion-col>\n\n              <ion-col>{{item.partner_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Tipo transferencia:</ion-col>\n\n              <ion-col>{{item.picking_type_id}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <ion-card>\n\n          <ion-card-content>\n\n            <ion-row>\n\n              <ion-col class="spec">Estado de transferencia:</ion-col>\n\n              <ion-col>{{item.state}}</ion-col>\n\n            </ion-row>\n\n          </ion-card-content>\n\n        </ion-card>\n\n        <div [hidden]="Swtch">\n\n          <form (ngSubmit)="updateQty()">\n\n            <ion-card>\n\n              <ion-card-content>\n\n                <ion-row>\n\n                  <ion-col class="spec">Cantidad a entregar:</ion-col>\n\n                  <ion-col>\n\n                    <ion-input type="number" name="qty_done" placeholder="Introduce un numero" [(ngModel)]="qty_done"></ion-input>\n\n                  </ion-col>\n\n                </ion-row>\n\n              </ion-card-content>\n\n            </ion-card>\n\n            <button ion-button block round outline type="submit">\n\n              Actualizar Cantidades\n\n            </button>\n\n          </form>\n\n          <button ion-button block round outline (click)="statusChange()">\n\n            Finalizar\n\n          </button>\n\n        </div>\n\n      </div>\n\n    </ion-list>\n\n  </div>\n\n</ion-content>'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers-view\transfers-view.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_3__services_utils__["a" /* Utils */]])
 ], TransfersViewPage);
@@ -523,16 +628,16 @@ var TransfersViewPage_1;
 
 /***/ }),
 
-/***/ 137:
+/***/ 138:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TransfersPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__transfers_view_transfers_view__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__transfers_view_transfers_view__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -601,7 +706,7 @@ var TransfersPage = (function () {
 }());
 TransfersPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-transfers',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers\transfers.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Transferencias\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <ion-list no-lines [virtualScroll]="transfArray">\n\n    <ion-item-sliding *virtualItem="let transfArray; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{transfArray.reference}}</h2>\n\n        <p>{{transfArray.origin}}</p>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers\transfers.html"*/,
+        selector: 'page-transfers',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers\transfers.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Transferencias\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <ion-list no-lines [virtualScroll]="transfArray">\n\n    <ion-item-sliding *virtualItem="let transfArray; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{transfArray.reference}}</h2>\n\n        <p>{{transfArray.origin}}</p>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\transfers\transfers.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_4__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_2__services_utils__["a" /* Utils */]])
 ], TransfersPage);
@@ -610,7 +715,7 @@ TransfersPage = __decorate([
 
 /***/ }),
 
-/***/ 148:
+/***/ 149:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -623,37 +728,41 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 148;
+webpackEmptyAsyncContext.id = 149;
 
 /***/ }),
 
-/***/ 192:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"../pages/clients/clients.module": [
+	"../pages/advanced-tools-login/advanced-tools-login.module": [
 		578,
-		5
+		0
+	],
+	"../pages/clients/clients.module": [
+		579,
+		6
 	],
 	"../pages/sale/sale.module": [
-		579,
-		4
+		582,
+		5
 	],
 	"../pages/sales-invoice-view/sales-invoice-view.module": [
 		580,
-		3
+		4
 	],
 	"../pages/sales-invoice/sales-invoice.module": [
 		581,
-		2
+		3
 	],
 	"../pages/transfers-view/transfers-view.module": [
-		582,
-		1
+		583,
+		2
 	],
 	"../pages/transfers/transfers.module": [
-		583,
-		0
+		584,
+		1
 	]
 };
 function webpackAsyncContext(req) {
@@ -667,107 +776,8 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 192;
+webpackAsyncContext.id = 193;
 module.exports = webpackAsyncContext;
-
-/***/ }),
-
-/***/ 259:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clients_clients__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_utils__ = __webpack_require__(33);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var LoginPage = (function () {
-    function LoginPage(navCtrl, navParams, odooRpc, utils, menu) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.odooRpc = odooRpc;
-        this.utils = utils;
-        this.menu = menu;
-        this.odooUrl = "http://172.18.8.25:8069";
-        this.selectedDatabase = "ValperApp";
-        this.advTools = true;
-        this.menu.swipeEnable(false);
-    }
-    LoginPage.prototype.reinit = function () {
-        this.odooRpc.init({
-            odoo_server: this.odooUrl,
-            http_auth: "username:password"
-        });
-    };
-    LoginPage.prototype.login = function () {
-        var _this = this;
-        this.utils.presentLoading("Iniciando Sesión", 0, true);
-        this.odooRpc
-            .login(this.selectedDatabase, this.email, this.password)
-            .then(function (res) {
-            console.log(JSON.parse(res._body));
-            if (Number(JSON.parse(res._body)["result"].partner_id)) {
-                var logiData = JSON.parse(res._body)["result"];
-                logiData.password = _this.password;
-                localStorage.setItem("token", JSON.stringify(logiData));
-                _this.utils.dismissLoading();
-                _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_0__clients_clients__["a" /* ClientsPage */]);
-            }
-            else {
-                _this.utils.dismissLoading();
-                _this.utils.presentAlert("Error", "El usuario no existe", [{
-                        text: "Ok"
-                    }]);
-            }
-        })
-            .catch(function (err) {
-            _this.utils.dismissLoading();
-            _this.utils.presentAlert("Error", "El usuario o contraseña deben ser incorrectos", [{
-                    text: "Ok"
-                }]);
-        });
-    };
-    LoginPage.prototype.advancedTools = function () {
-        if (this.advTools) {
-            this.advTools = false;
-        }
-        else {
-            this.advTools = true;
-        }
-    };
-    LoginPage.prototype.setIp = function () {
-        this.odooUrl = this.odooUrl;
-        this.advancedTools();
-    };
-    return LoginPage;
-}());
-LoginPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* Component */])({
-        selector: "page-login",template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\login\login.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title> Inicio de Sesión </ion-title>\n\n    <ion-buttons end>\n\n      <button ion-button icon-only (click)="advancedTools()">\n\n        <ion-icon name="construct"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content class="background">\n\n  <div text-center>\n\n    <img src="assets/imgs/ValperApp.png" alt="No Image" />\n\n  </div>\n\n\n\n  <ion-card>\n\n    <div>\n\n      <form (ngSubmit)="login()" #registerForm="ngForm">\n\n        <div class="spacer" style="height: 10px;"></div>\n\n\n\n        <ion-item class="border-box">\n\n          <ion-input type="email" placeholder="Usuario(Email)" [(ngModel)]="email" name="email" required></ion-input>\n\n        </ion-item>\n\n        <div class="spacer" style="height: 10px;"></div>\n\n\n\n        <ion-item class="border-box">\n\n          <ion-input type="password" [(ngModel)]="password" name="pass" placeholder="Contraseña" required></ion-input>\n\n        </ion-item>\n\n        <div class="spacer" style="height: 10px;"></div>\n\n        <button ion-button block round outline type="submit" (click)="reinit()">\n\n          Iniciar Sesión\n\n        </button>\n\n      </form>\n\n    </div>\n\n  </ion-card>\n\n  <div [hidden]="advTools">\n\n    <ion-input type="text" placeholder="Url Odoo" [(ngModel)]="odooUrl" name="odooUrl" required></ion-input>\n\n    <button ion-button block round outline (click)="setIp()">\n\n      Guardar configuración\n\n    </button>\n\n  </div>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\login\login.html"*/
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__["a" /* OdooJsonRpc */],
-        __WEBPACK_IMPORTED_MODULE_4__services_utils__["a" /* Utils */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* MenuController */]])
-], LoginPage);
-
-//# sourceMappingURL=login.js.map
 
 /***/ }),
 
@@ -792,20 +802,20 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_clients_clients__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_sale_sale__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_sales_invoice_sales_invoice__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_sale_sale__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_sales_invoice_sales_invoice__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(577);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_network__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_odoojsonrpc__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_splash_screen__ = __webpack_require__(261);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__ = __webpack_require__(260);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_sales_invoice_view_sales_invoice_view__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_transfers_transfers__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_transfers_view_transfers_view__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_sales_invoice_view_sales_invoice_view__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_transfers_transfers__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_transfers_view_transfers_view__ = __webpack_require__(137);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -847,10 +857,11 @@ AppModule = __decorate([
         ],
         imports: [__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_http__["c" /* HttpModule */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* MyApp */], {}, {
                 links: [
+                    { loadChildren: '../pages/advanced-tools-login/advanced-tools-login.module#AdvancedToolsLoginPageModule', name: 'AdvancedToolsLoginPage', segment: 'advanced-tools-login', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/clients/clients.module#ClientsPageModule', name: 'ClientsPage', segment: 'clients', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/sale/sale.module#SalePageModule', name: 'SalePage', segment: 'sale', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/sales-invoice-view/sales-invoice-view.module#SalesInvoiceViewPageModule', name: 'SalesInvoiceViewPage', segment: 'sales-invoice-view', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/sales-invoice/sales-invoice.module#SalesInvoicePageModule', name: 'SalesInvoicePage', segment: 'sales-invoice', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/sale/sale.module#SalePageModule', name: 'SalePage', segment: 'sale', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/transfers-view/transfers-view.module#TransfersViewPageModule', name: 'TransfersViewPage', segment: 'transfers-view', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/transfers/transfers.module#TransfersPageModule', name: 'TransfersPage', segment: 'transfers', priority: 'low', defaultHistory: [] }
                 ]
@@ -880,101 +891,17 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 33:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Utils; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var Utils = (function () {
-    function Utils(alrtCtrl, loadingCtrl, toastCtrl, actionSheetCtrl) {
-        this.alrtCtrl = alrtCtrl;
-        this.loadingCtrl = loadingCtrl;
-        this.toastCtrl = toastCtrl;
-        this.actionSheetCtrl = actionSheetCtrl;
-    }
-    Utils.prototype.presentAlert = function (title, message, buttons, subtitle, enableBackdropDismiss, inputs) {
-        var alrt = this.alrtCtrl.create({
-            title: title,
-            subTitle: subtitle,
-            message: message,
-            buttons: buttons,
-            enableBackdropDismiss: enableBackdropDismiss,
-            inputs: inputs
-        });
-        alrt.present();
-    };
-    Utils.prototype.presentToast = function (message, duration, dissmissOnPageChange, position, showCloseButton, closeButtonText) {
-        var toast = this.toastCtrl.create({
-            message: message,
-            position: position,
-            dismissOnPageChange: dissmissOnPageChange,
-            duration: duration,
-            showCloseButton: showCloseButton,
-            closeButtonText: closeButtonText
-        });
-        toast.present();
-    };
-    Utils.prototype.presentLoading = function (content, duration, dissmissOnPageChange, enableBackDropDismiss, showBackDrop, spinner) {
-        this.loading = this.loadingCtrl.create({
-            content: content,
-            dismissOnPageChange: dissmissOnPageChange,
-            duration: duration,
-            enableBackdropDismiss: enableBackDropDismiss,
-            showBackdrop: showBackDrop,
-            spinner: spinner
-        });
-        this.loading.present();
-    };
-    Utils.prototype.dismissLoading = function () {
-        this.loading.dismiss();
-    };
-    Utils.prototype.presentActionSheet = function (buttons, title, subtitle, enableBackdropDismiss) {
-        var actionCtrl = this.actionSheetCtrl.create({
-            buttons: buttons,
-            subTitle: subtitle,
-            title: title,
-            enableBackdropDismiss: enableBackdropDismiss
-        });
-        actionCtrl.present();
-    };
-    return Utils;
-}());
-Utils = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]])
-], Utils);
-
-//# sourceMappingURL=utils.js.map
-
-/***/ }),
-
-/***/ 34:
+/***/ 28:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OdooJsonRpc; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(1);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1175,6 +1102,9 @@ var OdooJsonRpc = (function () {
         this.call('sale.order', "action_confirm", [order_id], {}).then(function (res) {
             console.log(JSON.parse(res._body));
         });
+        this.call('sale.advance.payment.inv', "create_invoices", [], {}).then(function (res) {
+            console.log(JSON.parse(res._body));
+        });
     };
     /**
      * Creamos factura para la venta con id pasado por parametro
@@ -1250,22 +1180,106 @@ OdooJsonRpc = __decorate([
 
 /***/ }),
 
+/***/ 34:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Utils; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var Utils = (function () {
+    function Utils(alrtCtrl, loadingCtrl, toastCtrl, actionSheetCtrl) {
+        this.alrtCtrl = alrtCtrl;
+        this.loadingCtrl = loadingCtrl;
+        this.toastCtrl = toastCtrl;
+        this.actionSheetCtrl = actionSheetCtrl;
+    }
+    Utils.prototype.presentAlert = function (title, message, buttons, subtitle, enableBackdropDismiss, inputs) {
+        var alrt = this.alrtCtrl.create({
+            title: title,
+            subTitle: subtitle,
+            message: message,
+            buttons: buttons,
+            enableBackdropDismiss: enableBackdropDismiss,
+            inputs: inputs
+        });
+        alrt.present();
+    };
+    Utils.prototype.presentToast = function (message, duration, dissmissOnPageChange, position, showCloseButton, closeButtonText) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            position: position,
+            dismissOnPageChange: dissmissOnPageChange,
+            duration: duration,
+            showCloseButton: showCloseButton,
+            closeButtonText: closeButtonText
+        });
+        toast.present();
+    };
+    Utils.prototype.presentLoading = function (content, duration, dissmissOnPageChange, enableBackDropDismiss, showBackDrop, spinner) {
+        this.loading = this.loadingCtrl.create({
+            content: content,
+            dismissOnPageChange: dissmissOnPageChange,
+            duration: duration,
+            enableBackdropDismiss: enableBackDropDismiss,
+            showBackdrop: showBackDrop,
+            spinner: spinner
+        });
+        this.loading.present();
+    };
+    Utils.prototype.dismissLoading = function () {
+        this.loading.dismiss();
+    };
+    Utils.prototype.presentActionSheet = function (buttons, title, subtitle, enableBackdropDismiss) {
+        var actionCtrl = this.actionSheetCtrl.create({
+            buttons: buttons,
+            subTitle: subtitle,
+            title: title,
+            enableBackdropDismiss: enableBackdropDismiss
+        });
+        actionCtrl.present();
+    };
+    return Utils;
+}());
+Utils = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]])
+], Utils);
+
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
 /***/ 577:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_login_login__ = __webpack_require__(259);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_login_login__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_network__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_splash_screen__ = __webpack_require__(261);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_utils__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_clients_clients__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_sales_invoice_sales_invoice__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_transfers_transfers__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_sales_invoice_sales_invoice__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_transfers_transfers__ = __webpack_require__(138);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1352,7 +1366,7 @@ __decorate([
     __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* Nav */])
 ], MyApp.prototype, "nav", void 0);
 MyApp = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\app\app.html"*/'<ion-menu [content]="content">\n\n    <ion-header>\n\n      <ion-toolbar>\n\n        <ion-title>Menu</ion-title>\n\n      </ion-toolbar>\n\n    </ion-header>\n\n  \n\n    <ion-content>\n\n      <ion-list>\n\n        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n\n          {{p.title}}\n\n        </button>\n\n      </ion-list>\n\n      <ion-buttons end>\n\n          <button ion-button icon-only (click)="logOut()">\n\n            Cerrar Sesión\n\n            <ion-icon name="log-out"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n    </ion-content>\n\n  \n\n  </ion-menu>\n\n  \n\n  <!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n\n  <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>\n\n  '/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\app\app.html"*/,
+    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\app\app.html"*/'<ion-menu [content]="content">\n\n    <ion-header>\n\n      <ion-toolbar>\n\n        <ion-title>Menu</ion-title>\n\n      </ion-toolbar>\n\n    </ion-header>\n\n  \n\n    <ion-content>\n\n      <ion-list>\n\n        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n\n          {{p.title}}\n\n        </button>\n\n      </ion-list>\n\n      <ion-buttons end>\n\n          <button ion-button icon-only (click)="logOut()">\n\n            Cerrar Sesión\n\n            <ion-icon name="log-out"></ion-icon>\n\n          </button>\n\n        </ion-buttons>\n\n    </ion-content>\n\n  \n\n  </ion-menu>\n\n  \n\n  <!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n\n  <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>\n\n  '/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\app\app.html"*/,
         providers: [__WEBPACK_IMPORTED_MODULE_1__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_7__services_utils__["a" /* Utils */]]
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* Platform */],
@@ -1374,10 +1388,10 @@ MyApp = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ClientsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_odoojsonrpc__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_utils__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_odoojsonrpc__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sale_sale__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__sale_sale__ = __webpack_require__(134);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1526,7 +1540,7 @@ var ClientsPage = (function () {
 }());
 ClientsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-clients',template:/*ion-inline-start:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\clients\clients.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Clientes\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <form (ngSubmit)="checkUser()">\n\n    <ion-item class="border-box">\n\n      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>\n\n    </ion-item>\n\n    <div class="spacer" style="height: 10px;"></div>\n\n    <button ion-button block round outline type="submit">\n\n      Comprobar\n\n    </button>\n\n  </form>\n\n  <ion-list no-lines [virtualScroll]="clients">\n\n    <ion-item-sliding *virtualItem="let clients; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{clients.name}}</h2>\n\n        <p>{{clients.vat}}</p>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\usrva33\Documents\GitHub\GestorInventarioDockers\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\clients\clients.html"*/,
+        selector: 'page-clients',template:/*ion-inline-start:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\clients\clients.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n        <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>\n\n      Clientes\n\n    </ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n\n  <form (ngSubmit)="checkUser()">\n\n    <ion-item class="border-box">\n\n      <ion-input type="text" placeholder="NIF/DNI" [(ngModel)]="Nif" name="Nif" required></ion-input>\n\n    </ion-item>\n\n    <div class="spacer" style="height: 10px;"></div>\n\n    <button ion-button block round outline type="submit">\n\n      Comprobar\n\n    </button>\n\n  </form>\n\n  <ion-list no-lines [virtualScroll]="clients">\n\n    <ion-item-sliding *virtualItem="let clients; let i=index">\n\n      <ion-item (click)="view(i)">\n\n        <h2>{{clients.name}}</h2>\n\n        <p>{{clients.vat}}</p>\n\n      </ion-item>\n\n    </ion-item-sliding>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Proyectos_Aplicaciones\Proyecto_Gestor_Ventas(OdooApi+Ionic)\src\pages\clients\clients.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__services_odoojsonrpc__["a" /* OdooJsonRpc */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_2__services_utils__["a" /* Utils */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */]])
 ], ClientsPage);

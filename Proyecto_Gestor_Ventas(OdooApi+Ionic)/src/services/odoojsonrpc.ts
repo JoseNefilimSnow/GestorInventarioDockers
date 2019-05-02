@@ -221,6 +221,9 @@ export class OdooJsonRpc {
         this.call('sale.order', "action_confirm", [order_id], {}).then((res: any) => {
             console.log(JSON.parse(res._body))
         });
+        this.call('sale.advance.payment.inv', "create_invoices", [], {}).then((res: any) => {
+            console.log(JSON.parse(res._body))
+        })
     }
 
     /**

@@ -18,11 +18,24 @@
   <div>
     <form (ngSubmit)="addProdToSale()">
       <ion-col align-self: center>
-        <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>
         <ion-input type="number" placeholder="Cantidad" name="Quantity" [(ngModel)]="Quantity"></ion-input>
+        <ion-input type="text" placeholder="Ref.Producto" name="Prod_ref" [(ngModel)]="Prod_ref"></ion-input>
         <button ion-button block round outline type="submit">Añadir Producto</button>
       </ion-col>
     </form>
+    <ion-row>
+      <ion-col><ion-label name="totalP">Precio Total(€):</ion-label></ion-col>
+      <ion-col><ion-input name="total" [(ngModel)]="total" [readonly]=true></ion-input></ion-col>
+    </ion-row>
+    <ion-label name="totalP">-------------------------------------------------------------------------</ion-label>
+    <ion-list no-lines [virtualScroll]="prodsArray">
+      <ion-item-sliding *virtualItem="let prodsArray">
+        <ion-item>
+          <h2>{{prodsArray.name}}</h2>
+          <h3>{{prodsArray.price}}</h3>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
     <ion-row>
       <ion-col col-6>
         <button ion-button block round outline (click)="cancelSale()">Cancelar</button>
