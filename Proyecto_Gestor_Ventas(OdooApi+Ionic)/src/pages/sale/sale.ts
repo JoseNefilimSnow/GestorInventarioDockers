@@ -120,7 +120,7 @@ export class SalePage {
   private addProdToSale() {
     this.utils.presentLoading("Cargando..." + "\n" + "Por Favor, Espere.")
     let patrn = [
-      ["default_code", "=", this.Prod_ref]
+      ["barcode", "=", this.Prod_ref]
     ];
     this.odooRpc.getRecord('product.template', patrn, [], 0, 0, "").then((res: any) => {
       this.utils.dismissLoading();
