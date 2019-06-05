@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="report_product_barcode_location"
+            string="Localizaciones del Producto"
+            model="product.template"
+            report_type="qweb-pdf"
+            name="posicionamientoinventario.report_productbarcode"
+            file="posicionamientoinventario.report_productbarcode"
+            print_report_name="'Codigo de Barras de - %s' % (object.name)"
+        />
+    </data>
+</odoo>

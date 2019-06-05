@@ -20,8 +20,8 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page[@name='inventory']" position="inside">
-                    <group string="Ubicaciones del producto">
-                        <field name="pos2" string="Posicion"/>
+                    <group string="Ubicacion del producto">
+                        <field name="ub" string="Posicion"/>
                     </group>
                 </xpath>
             </field>

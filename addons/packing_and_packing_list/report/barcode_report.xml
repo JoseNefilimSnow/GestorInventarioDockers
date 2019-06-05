@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="report_packing_barcode"
+            string="Packing List"
+            model="packing.packing"
+            report_type="qweb-pdf"
+            name="packing_and_packing_list.report_packingbarcode"
+            file="packing_and_packing_list.report_packingbarcode"
+            print_report_name="'Packing List - %s' % (object.display_name)"
+        />
+    </data>
+</odoo>

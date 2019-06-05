@@ -1,0 +1,61 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="packing_and_packing_list.list">
+      <field name="name">packing_and_packing_list list</field>
+      <field name="model">packing.packing</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="employee"/>
+          <field name="client"/>
+          <field name="origin"/>
+          <field name="type"/>
+          <field name="barcode"/>
+          <field name="active"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="packing_and_packing_list.action_window">
+      <field name="name">Vista de empaquetado</field>
+      <field name="res_model">packing.packing</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+    <!-- <record model="ir.actions.server" id="packing_and_packing_list.action_server">
+      <field name="name">packing_and_packing_list server</field>
+      <field name="model_id" ref="model_packing_and_packing_list_packing_and_packing_list"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Packing" id="packing_and_packing_list.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="packing_and_packing_list.menu_1" parent="packing_and_packing_list.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="packing_and_packing_list.menu_2" parent="packing_and_packing_list.menu_root"/> -->
+
+    <!-- actions -->
+
+    <menuitem name="Lista" id="packing_and_packing_list.menu_1_list" parent="packing_and_packing_list.menu_1" action="packing_and_packing_list.action_window"/>
+    <!-- <menuitem name="Server to list" id="packing_and_packing_list" parent="packing_and_packing_list.menu_2" action="packing_and_packing_list.action_server"/> -->
+
+  </data>
+</odoo>

@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="posicionamientoinventario.list">
+        <!-- <record model="ir.ui.view" id="posicionamientoinventario.list">
             <field name="name">Posicionamiento</field>
             <field name="model">posicionamientoinventario.posicionamientoinventario</field>
             <field name="arch" type="xml">
@@ -10,28 +10,11 @@
                     <field name="pos"/>
                 </tree>
             </field>
-        </record>
-
-        <record model="ir.ui.view" id="posicionamientoinventario.ub">
-            <field name="name">Ubicacion</field>
-            <field name="model">posicionamientoinventarioub.ubicacion</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <group>
-                                <field name="ub_id" invisible="1"/>
-                                <field name="ub"/>
-                            </group>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+        </record> -->
 
         <record model="ir.ui.view" id="posicionamientoinventario.cod">
             <field name="name">Codigo</field>
-            <field name="model">posicionamientoinventariopl.placeholder</field>
+            <field name="model">posicionamientoinventario.placeholder</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>

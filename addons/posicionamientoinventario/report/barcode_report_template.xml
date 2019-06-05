@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_productbarcode">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="docs" t-as="product">
+                    <t t-call="posicionamientoinventario.report_barcode_location">
+                    <t t-set="product" t-value="product"/>
+                 </t>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

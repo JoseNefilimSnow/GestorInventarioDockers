@@ -27,6 +27,9 @@
         'views/views.xml',
         'views/templates.xml',
         'views/inherited_form_view.xml',
+        'report/barcode_report_template.xml',
+        'report/barcode_report.xml',
+        'wizard/barcode_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

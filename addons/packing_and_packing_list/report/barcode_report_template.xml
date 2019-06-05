@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_packingbarcode">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="docs" t-as="packing_and_packing_list">
+                    <t t-call="packing_and_packing_list.report_barcode_list">
+                    <t t-set="packing_and_packing_list" t-value="packing_and_packing_list"/>
+                 </t>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
