@@ -1,10 +1,7 @@
 # Proyecto de Implantación de Odoo
 
-### Valper Soluciones y Mantenimiento SL
 ##### Adrián Vera Pulido
 ##### Jose Juan Díaz Vega
-
-![valper](https://i.imgur.com/0cRmFzC.jpg)
 
 
 # Indice
