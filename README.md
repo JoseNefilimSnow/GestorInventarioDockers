@@ -16,7 +16,7 @@
 
 # [Introducción]
 
-El proyecto a realizar es una gestión de inventario propuesto por la empresa Valper. Este se fijara en el esquema interno de los trabajadores del inventario el cual existe un responsable y empleados a su cargo. A parte de estos, un grupo ajeno a esta organización también tendrá acceso al portal a desarrollar será un empleado de cara al público y finalmente se seguirá el siguiente esquema de casos de uso: 
+El proyecto a realizar es una gestión de inventario . Este se fijara en el esquema interno de los trabajadores del inventario el cual existe un responsable y empleados a su cargo. A parte de estos, un grupo ajeno a esta organización también tendrá acceso al portal a desarrollar será un empleado de cara al público y finalmente se seguirá el siguiente esquema de casos de uso: 
 
 ![Imgur](https://i.imgur.com/QCU7GIh.png)
  
